@@ -68,25 +68,35 @@ architecture Behavioral of Core is
 	signal HOST_ADDRESS : STD_LOGIC_VECTOR (47 downto 0) := X"123456123456"; 
 	signal S_RSMATIP : STD_LOGIC :='0';
 	signal S_RCVNGP : STD_LOGIC := '0'; 
+	
+	signal SENDING : STD_LOGIC := '0'; 
+	signal RECEIVING : STD_LOGIC := '0'; 
+	
+	signal T_REQUEST_CK_SYNC : STD_LOGIC := '0'; 
+	signal R_REQUEST_CK_SYNC : STD_LOGIC := '0'; 
 begin
-
+	
+	CLKDIV_RST <= T_REQUEST_CK_SYNC xor R_REQUEST_CK_SYNC; 
+	
 	CLKDIV : process
 		variable clk_count : INTEGER RANGE 0 TO 3; 
 	begin
 		wait until CLK10I'event and CLK10I='1'; 
-			CLKDIV_UP <= '0'; 
+		
+		CLKDIV_UP <= '0'; 
+		
 		if CLKDIV_RST = '1' then 			-- Reset de l'horloge
 			CLKDIV8 <= '0'; 
 			clk_count := 0; 
 		else 										-- Fonctionnement normal	
-			if clk_count = 3 then 	-- Si l'horloge était à 0, elle va passer à 1 => front montant 
+			if clk_count = 0 then 	-- Si l'horloge était à 0, elle va passer à 1 => front montant 
 				CLKDIV8 <= not CLKDIV8; 		-- Toggle
 				clk_count := 0; 					-- Reset du compteur 
 			else
 				clk_count := clk_count + 1;		--	Compte 8 tics d'horloge
 			end if; 
 		end if; 
-		if clk_count = 2 and CLKDIV8 = '0' then
+		if clk_count = 0 and CLKDIV8 = '0' then
 			CLKDIV_UP <= '1'; 
 		end if;
 		CLKDIV8_UP <= CLKDIV_UP;
@@ -104,7 +114,7 @@ begin
 		RCLEANP <= '0';
 		RBYTEP <= '0'; 
 		RDONEP <= '0'; 
-		--CLKDIV_RST <= '0';
+		R_REQUEST_CK_SYNC <= '0';
 		
 		if PAUSE_END = '1' then
 			if CLKDIV_UP = '1' then
@@ -114,11 +124,13 @@ begin
 		elsif RDATAI=X"AB" and S_RCVNGP='0' and S_RSMATIP='0' then  -- Start Frame Delimiter
 			S_RCVNGP <= '1';														-- Receiving pulse
 			ADDRESS_BUFFER := (others=>'0');									-- Reset buffer adresse
-			--CLKDIV_RST <= '1'; 													-- Sync clock divisé 8 fois
+			R_REQUEST_CK_SYNC <= '1'; 													-- Sync clock divisé 8 fois
 			RCOUNT := 0; 															-- Reset du compteur
 			PAUSE_START := '1';
+			RECEIVING <= '1';  														-- On est en attente de réception
 			
 		elsif S_RCVNGP = '1' and S_RSMATIP='0' then 					-- Réception débuté, controle adresse dest. 
+		
 		   -- [TODO] Check this
 			if PAUSE_START = '1' then
 				if CLKDIV_UP = '1' then
@@ -148,12 +160,15 @@ begin
 					S_RSMATIP <= '0';														-- 
 					RDONEP <= '1'; 														-- Pulse reception terminée
 					PAUSE_END := '1'; 
+					RECEIVING <= '0'; 
 				else 
 					RDATAO <= RDATAI; 
 					RBYTEP <= '1'; 														-- Pulse octet lu
 				end if; 
 			end if;
 		end if;
+		
+		
 	end process Receiver; 
 	
 	RSMATIP <= S_RSMATIP; 
@@ -167,13 +182,15 @@ begin
 		variable TRON : STD_LOGIC := '0'; -- TRON : 1 -> transmitting, 0 -> wait
 		variable DADR_SENT : STD_LOGIC := '0'; 
 		variable TADR_SENT : STD_LOGIC := '0'; 
+		
 	begin
 		wait until CLK10I'event and CLK10I='1'; 	-- CLK10 Sync
 		
 		TSTARTP <= '0'; 
 		TRNSMTP <= '0'; 
 		TREADDP <= '0'; 
-		CLKDIV_RST <= '0'; 
+		T_REQUEST_CK_SYNC <= '0'; 
+		SENDING <= TRON; 
 		
 		
 		if TAVAILP = '1' and TRON = '0' then
@@ -181,7 +198,7 @@ begin
 			TRNSMTP <= '1'; 						-- 
 			TSTARTP <= '1'; 						-- Début trans
 			TDATAO <= X"AB"; 						-- EFD
-			CLKDIV_RST <= '1'; 					-- Sync Clock
+			T_REQUEST_CK_SYNC <= '1'; 					-- Sync Clock
 			ADRCOUNT := 0; 
 			DADR_SENT := '0';
 			COUNT4 := 0;
@@ -220,7 +237,7 @@ begin
 							TADR_SENT := '1'; 
 						end if; 		
 						
-					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '0' then 		-- CAS 2 adresses envoyees, debut donnees
+					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '0' then 	-- CAS 2 adresses envoyees, debut donnees
 						TDATAO <= TDATAI; 
 						
 					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '1' then 
@@ -235,8 +252,16 @@ begin
 		end if; 
 	end process Transmitter;
 	
-	Collision : process
+	Collision_Detect : process
 	begin 
-	
-	end process Collision; 
+		wait until CLK10I'event and CLK10I = '1'; 
+
+		
+		if SENDING /= '0' and RECEIVING /= '0' then 
+			TSOCOLP <= '1'; 
+		else 
+			TSOCOLP <= '0';
+		end if; 
+		
+	end process Collision_Detect; 
 end Behavioral;

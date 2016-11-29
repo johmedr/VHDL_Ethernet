@@ -163,7 +163,7 @@ begin
 		variable ADRCOUNT : integer range 6 downto 0; 
 		variable PAUSE_START : STD_LOGIC := '0';
 		variable PAUSE_END : STD_LOGIC := '0';
-		variable COUNT4 : integer range 4 downto 0;	-- Count for error 
+		variable COUNT4 : integer range 5 downto 0;	-- Count for error 
 		variable TRON : STD_LOGIC := '0'; -- TRON : 1 -> transmitting, 0 -> wait
 		variable DADR_SENT : STD_LOGIC := '0'; 
 		variable TADR_SENT : STD_LOGIC := '0'; 
@@ -190,7 +190,7 @@ begin
 			
 			
 			if CLKDIV_UP = '1' then  				-- Sync sur CLKDIV 
-				if (TABORTP = '1' or COUNT4 > 0) and COUNT4 < 4 then -- Pulse abandon ou comptage commencé et pas fini
+				if (TABORTP = '1' or COUNT4 > 0) and COUNT4 < 5 then -- Pulse abandon ou comptage commencé et pas fini
 					TDATAO <= X"AA"; 
 					COUNT4 := COUNT4 + 1; 
 					if COUNT4 = 4 then 
@@ -235,5 +235,8 @@ begin
 		end if; 
 	end process Transmitter;
 	
+	Collision : process
+	begin 
 	
+	end process Collision; 
 end Behavioral;

@@ -80,6 +80,9 @@ architecture Behavioral of Core is
 	signal T_REQUEST_CK_SYNC : STD_LOGIC := '0'; 
 	signal R_REQUEST_CK_SYNC : STD_LOGIC := '0'; 
 	
+	-- Collisions 
+	signal COL_DETECTED : STD_LOGIC := '0'; 
+	
 begin
 		
 		
@@ -131,7 +134,7 @@ begin
 		variable PAUSE_START : STD_LOGIC := '0';
 		variable PAUSE : STD_LOGIC := '0';
 		variable ALLOWED_RESET : STD_LOGIC := '1';
-		--variable COUNT8 : integer range 0 downto 7; 
+		
 	begin
 		wait until CLK10I'event and CLK10I='1' and RENABP='1'; 	-- CLK10 Sync
 		
@@ -141,57 +144,59 @@ begin
 		R_REQUEST_CK_SYNC <= '0';
 		ALLOWED_RESET := '1';
 		
-		if S_RCVNGP='0' and S_RSMATIP='0' and RDATAI=X"AB" then -- Start Frame Delimiter
-		
-			if PAUSE = '1' then
-				if CLKDIV_UP = '1' then
-					PAUSE := '0';
-					ALLOWED_RESET := '0';
-				end if; 
-			end if; 
+		if RENABP = '1' then 
+			if S_RCVNGP='0' and S_RSMATIP='0' and RDATAI=X"AB" then -- Start Frame Delimiter
 			
-			if PAUSE = '0' then
-				S_RCVNGP <= '1';														-- Receiving pulse
-				ADDRESS_BUFFER := (others=>'0');									-- Reset buffer adresse
-				if ALLOWED_RESET = '1' then
-					R_REQUEST_CK_SYNC <= '1'; 													-- Sync clock divisé 8 fois
-				end if;
-				RCOUNT := 0; 															-- Reset du compteur
-				PAUSE_START := '1';
-				RECEIVING <= '1';  														-- On est en attente de réception
-			end if;
-			
-		elsif S_RCVNGP = '1' and S_RSMATIP='0' then 					-- Réception débuté, controle adresse dest. 
-		
-				if RCOUNT < 6 then													-- Réception de l'addresse destinataire
-					if CLKDIV_UP = '1' then 											-- Sync sur front montant CLKDIV 
-						ADDRESS_BUFFER((47 - (RCOUNT * 8)) downto (48 - ((RCOUNT+1) * 8))) :=  RDATAI(7 downto 0); 
-						RCOUNT := RCOUNT + 1; 
+				if PAUSE = '1' then
+					if CLKDIV_UP = '1' then
+						PAUSE := '0';
+						ALLOWED_RESET := '0';
 					end if; 
-				else																		-- Réception terminée 
-					if  ADDRESS_BUFFER /= HOST_ADDRESS then 						-- Comparaison adresse dest. - adresse host
-						RCLEANP <= '1'; 														-- Adresse invalide, pulse de reset buffer host
-						S_RCVNGP <= '0';														-- On arrete la reception
-					else 
-						S_RSMATIP <= '1'; 													-- Adresse valide, suite lecture
+				end if; 
+				
+				if PAUSE = '0' then
+					S_RCVNGP <= '1';														-- Receiving pulse
+					ADDRESS_BUFFER := (others=>'0');									-- Reset buffer adresse
+					if ALLOWED_RESET = '1' then
+						R_REQUEST_CK_SYNC <= '1'; 													-- Sync clock divisé 8 fois
 					end if;
-				end if; 
+					
+					RCOUNT := 0; 															-- Reset du compteur
+					PAUSE_START := '1';
+					RECEIVING <= '1';  														-- On est en attente de réception
+				end if;
+				
+			elsif S_RCVNGP = '1' and S_RSMATIP='0' then 					-- Réception débuté, controle adresse dest. 
+			
+					if RCOUNT < 6 then													-- Réception de l'addresse destinataire
+						if CLKDIV_UP = '1' then 											-- Sync sur front montant CLKDIV 
+							ADDRESS_BUFFER((47 - (RCOUNT * 8)) downto (48 - ((RCOUNT+1) * 8))) :=  RDATAI(7 downto 0); 
+							RCOUNT := RCOUNT + 1; 
+						end if; 
+					else																		-- Réception terminée 
+						if  ADDRESS_BUFFER /= HOST_ADDRESS then 						-- Comparaison adresse dest. - adresse host
+							RCLEANP <= '1'; 														-- Adresse invalide, pulse de reset buffer host
+							S_RCVNGP <= '0';														-- On arrete la reception
+						else 
+							S_RSMATIP <= '1'; 													-- Adresse valide, suite lecture
+						end if;
+					end if; 
 
-		elsif S_RCVNGP = '1' and S_RSMATIP = '1' then				-- Adresse dest. valide, suite lecture 
-			if CLKDIV_UP = '1' then 											-- Sync sur front montant CLKDIV
-				if RDATAI=X"AB" then													-- Test de End Frame Delimiter
-					S_RCVNGP <= '0'; 														-- Fin de reception 
-					S_RSMATIP <= '0';														-- 
-					RDONEP <= '1'; 														-- Pulse reception terminée
-					PAUSE := '1'; 
-					RECEIVING <= '0'; 
-				else 
-					RDATAO <= RDATAI; 
-					RBYTEP <= '1'; 														-- Pulse octet lu
-				end if; 
+			elsif S_RCVNGP = '1' and S_RSMATIP = '1' then				-- Adresse dest. valide, suite lecture 
+				if CLKDIV_UP = '1' then 											-- Sync sur front montant CLKDIV
+					if RDATAI=X"AB" then													-- Test de End Frame Delimiter
+						S_RCVNGP <= '0'; 														-- Fin de reception 
+						S_RSMATIP <= '0';														-- 
+						RDONEP <= '1'; 														-- Pulse reception terminée
+						PAUSE := '1'; 
+						RECEIVING <= '0'; 
+					else 
+						RDATAO <= RDATAI; 
+						RBYTEP <= '1'; 														-- Pulse octet lu
+					end if; 
+				end if;
 			end if;
-		end if;
-		
+		end if; 
 		
 	end process Receiver; 
 	
@@ -207,10 +212,11 @@ begin
 		variable ADRCOUNT : integer range 6 downto 0; 
 		variable COUNT4 : integer range 5 downto 0;	-- Count for error 
 		variable COUNT10 : integer range 10 downto 0; -- Count for time (100 ns) 
-		variable TRON : STD_LOGIC := '0'; -- TRON : 1 -> transmitting, 0 -> wait
+		--variable TRON : STD_LOGIC := '0'; -- TRON : 1 -> transmitting, 0 -> wait
 		variable DADR_SENT : STD_LOGIC := '0'; 
 		variable TADR_SENT : STD_LOGIC := '0'; 
 		variable SFD_SENT : STD_LOGIC := '0'; 
+		variable SENDING_FAIL : STD_LOGIC := '0';
 		
 		
 	begin
@@ -227,35 +233,45 @@ begin
 		TRNSMTP <= '0'; 
 		TREADDP <= '0'; 
 		T_REQUEST_CK_SYNC <= '0'; 
-		SENDING <= TRON; 
+		TSOCOLP <= '0'; 
 		
 		
-		if TAVAILP = '1' and TRON = '0' then
-			TRON := '1'; 
+		if TAVAILP = '1' and SENDING = '0' then
+		
+			SENDING <= '1'; 
 			TRNSMTP <= '1'; 						-- 
 			TSTARTP <= '1'; 						-- Début trans
 			COUNT10 := 1; 
-			--TDATAO <= X"AB"; 						-- EFD
 			T_REQUEST_CK_SYNC <= '1'; 					-- Sync Clock
 			ADRCOUNT := 0; 
 			DADR_SENT := '0';
 			COUNT4 := 0;
 			
-		elsif TRON = '1' then
+		elsif SENDING = '1' then
 			
 			
 			if CLKDIV_UP = '1' then  				-- Sync sur CLKDIV 
+			
+				-- Abandon
 				if (TABORTP = '1' or COUNT4 > 0) and COUNT4 < 5 then -- Pulse abandon ou comptage commencé et pas fini
 					TDATAO <= X"AA"; 
 					COUNT4 := COUNT4 + 1; 
 					-- À compléter
 					if COUNT4 = 4 then 
-						TRON := '0'; 
+						SENDING <= '0'; 
 						COUNT4 := 0;
+						TSOCOLP <= '1'; 
 					end if; 
 					
-				else
+				-- Fonctionnement normal
 				
+--				-- Plus de risque de collision après un unique echec d'envoi 
+--				if SENDING_FAIL = '1' then 
+--					SENDING_FAIL := '0'; 
+--					TSOCOLP <= '1'; 
+--				end if; 
+				else 
+			
 					if SFD_SENT = '0' then 
 						TDATAO <= X"AB"; 
 						SFD_SENT := '1'; 
@@ -293,27 +309,25 @@ begin
 					 
 						
 					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '1' then 
-						
 						TDATAO <= X"AB"; 
 						TDONEP <= '1'; 
 						COUNT10 := 1;
 						DADR_SENT := '0'; 
 						TADR_SENT := '0'; 
-						TRON := '0'; 
+						SENDING <= '0'; 
 						
 					end if;
-				end if; 
+				end if;	
 			end if; 
 		end if; 
 	end process Transmitter;
 	
 	Collision_Detect : process
 	begin 
-		wait until CLK10I'event and CLK10I = '1'; 		
-		if SENDING /= '0' and RECEIVING /= '0' then 
-			TSOCOLP <= '1'; 
-		else 
-			TSOCOLP <= '0';
+		wait until CLK10I'event and CLK10I = '1';		
+		
+		if (TAVAILP = '1' and RECEIVING = '1') or (SENDING = '1' and RECEIVING = '1') then 
+			COL_DETECTED <= '1'; 
 		end if; 
 		
 	end process Collision_Detect; 

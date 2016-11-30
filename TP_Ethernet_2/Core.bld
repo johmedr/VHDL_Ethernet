@@ -1,11 +1,11 @@
-Release 13.4 ngdbuild O.87xd (lin64)
-Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+Release 14.7 ngdbuild P.20131013 (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Command Line: /usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/bin/lin64/unwrapped/ngdbuild
--intstyle ise -dd _ngo -nt timestamp -uc Core.ucf -p xc6slx16-csg324-2 Core.ngc
-Core.ngd
+Command Line: /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/unwrapped/ngdbuild -intstyle
+ise -dd _ngo -nt timestamp -uc Core.ucf -p xc6slx16-csg324-2 Core.ngc Core.ngd
 
-Reading NGO file "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ngc" ...
+Reading NGO file "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/Core.ngc"
+...
 Gathering constraint information from source properties...
 Done.
 
@@ -27,10 +27,10 @@ NGDBUILD Design Results Summary:
   Number of errors:     0
   Number of warnings:   0
 
-Total memory usage is 400696 kilobytes
+Total memory usage is 396872 kilobytes
 
 Writing NGD file "Core.ngd" ...
-Total REAL time to NGDBUILD completion:  2 sec
-Total CPU time to NGDBUILD completion:   1 sec
+Total REAL time to NGDBUILD completion:  10 sec
+Total CPU time to NGDBUILD completion:   10 sec
 
 Writing NGDBUILD log file "Core.bld"...

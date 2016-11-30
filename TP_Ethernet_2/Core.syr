@@ -1,18 +1,18 @@
-Release 13.4 - xst O.87xd (lin64)
-Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+Release 14.7 - xst P.20131013 (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 --> 
 Parameter TMPDIR set to xst/projnav.tmp
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.06 secs
+Total CPU time to Xst completion: 0.07 secs
  
 --> 
 Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.06 secs
+Total CPU time to Xst completion: 0.07 secs
  
 --> 
 Reading design: Core.prj
@@ -104,12 +104,11 @@ Slice Utilization Ratio Delta      : 5
 
 =========================================================================
 
-INFO:Xst - Part-select index evaluated to out of bound value may lead to incorrect synthesis results; it is recommended not to use them in RTL
 
 =========================================================================
 *                          HDL Parsing                                  *
 =========================================================================
-Parsing VHDL file "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/core.vhd" into library work
+Parsing VHDL file "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" into library work
 Parsing entity <Core>.
 Parsing architecture <Behavioral> of entity <core>.
 
@@ -118,16 +117,16 @@ Parsing architecture <Behavioral> of entity <core>.
 =========================================================================
 
 Elaborating entity <Core> (architecture <Behavioral>) from library <work>.
-WARNING:HDLCompiler:871 - "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/core.vhd" Line 69: Using initial value "000100100011010001010110000100100011010001010110" for host_address since it is never assigned
-WARNING:HDLCompiler:1127 - "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/core.vhd" Line 330: Assignment to col_detected ignored, since the identifier is never used
+WARNING:HDLCompiler:871 - "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" Line 72: Using initial value "000100100011010001010110000100100011010001010110" for host_address since it is never assigned
+WARNING:HDLCompiler:1127 - "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" Line 341: Assignment to col_detected ignored, since the identifier is never used
 
 =========================================================================
 *                           HDL Synthesis                               *
 =========================================================================
 
 Synthesizing Unit <Core>.
-    Related source file is "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/core.vhd".
-WARNING:Xst:647 - Input <NOADDRI<47:0>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Related source file is "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd".
+WARNING:Xst:647 - Input <NOADDRI> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <TFINISHP> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
     Found 1-bit register for signal <CLKDIV_UP>.
@@ -139,10 +138,10 @@ WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and 
     Found 1-bit register for signal <RDONEP>.
     Found 1-bit register for signal <R_REQUEST_CK_SYNC>.
     Found 1-bit register for signal <Receiver.PAUSE>.
-    Found 1-bit register for signal <RCVNGP>.
+    Found 1-bit register for signal <S_RCVNGP>.
     Found 48-bit register for signal <Receiver.ADDRESS_BUFFER>.
     Found 3-bit register for signal <Receiver.RCOUNT>.
-    Found 1-bit register for signal <RSMATIP>.
+    Found 1-bit register for signal <S_RSMATIP>.
     Found 8-bit register for signal <RDATAO>.
     Found 4-bit register for signal <Transmitter.COUNT10>.
     Found 1-bit register for signal <TSTARTP>.
@@ -158,24 +157,24 @@ WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and 
     Found 8-bit register for signal <TDATAO>.
     Found 1-bit register for signal <Transmitter.SFD_SENT>.
     Found 1-bit register for signal <Transmitter.TADR_SENT>.
-    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_11_OUT> created at line 172.
-    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_114_OUT> created at line 295.
-    Found 3-bit adder for signal <CLKDIV.clk_count[2]_GND_5_o_add_2_OUT> created at line 111.
-    Found 3-bit adder for signal <Receiver.RCOUNT[2]_GND_5_o_add_72_OUT> created at line 173.
-    Found 4-bit adder for signal <Transmitter.COUNT10[3]_GND_5_o_add_99_OUT> created at line 226.
-    Found 3-bit adder for signal <Transmitter.COUNT4[2]_GND_5_o_add_103_OUT> created at line 258.
-    Found 3-bit adder for signal <Transmitter.ADRCOUNT[2]_GND_5_o_add_131_OUT> created at line 299.
-    Found 3-bit comparator greater for signal <Receiver.RCOUNT[2]_PWR_5_o_LessThan_10_o> created at line 170
-    Found 4-bit comparator greater for signal <GND_5_o_Transmitter.COUNT10[3]_LessThan_98_o> created at line 225
-    Found 4-bit comparator greater for signal <Transmitter.COUNT10[3]_PWR_5_o_LessThan_99_o> created at line 225
-    Found 3-bit comparator greater for signal <GND_5_o_Transmitter.COUNT4[2]_LessThan_102_o> created at line 256
-    Found 3-bit comparator greater for signal <Transmitter.COUNT4[2]_PWR_5_o_LessThan_103_o> created at line 256
-    Found 3-bit comparator greater for signal <Transmitter.ADRCOUNT[2]_PWR_5_o_LessThan_113_o> created at line 294
+    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_11_OUT> created at line 185.
+    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_114_OUT> created at line 302.
+    Found 3-bit adder for signal <CLKDIV.clk_count[2]_GND_5_o_add_4_OUT> created at line 134.
+    Found 3-bit adder for signal <Receiver.RCOUNT[2]_GND_5_o_add_72_OUT> created at line 186.
+    Found 4-bit adder for signal <Transmitter.COUNT10[3]_GND_5_o_add_99_OUT> created at line 239.
+    Found 3-bit adder for signal <Transmitter.COUNT4[2]_GND_5_o_add_103_OUT> created at line 271.
+    Found 3-bit adder for signal <Transmitter.ADRCOUNT[2]_GND_5_o_add_131_OUT> created at line 306.
+    Found 3-bit comparator greater for signal <Receiver.RCOUNT[2]_PWR_5_o_LessThan_10_o> created at line 183
+    Found 4-bit comparator greater for signal <GND_5_o_Transmitter.COUNT10[3]_LessThan_98_o> created at line 238
+    Found 4-bit comparator greater for signal <Transmitter.COUNT10[3]_PWR_5_o_LessThan_99_o> created at line 238
+    Found 3-bit comparator greater for signal <GND_5_o_Transmitter.COUNT4[2]_LessThan_102_o> created at line 269
+    Found 3-bit comparator greater for signal <Transmitter.COUNT4[2]_PWR_5_o_LessThan_103_o> created at line 269
+    Found 3-bit comparator greater for signal <Transmitter.ADRCOUNT[2]_PWR_5_o_LessThan_113_o> created at line 301
     Summary:
 	inferred   7 Adder/Subtractor(s).
 	inferred 100 D-type flip-flop(s).
 	inferred   6 Comparator(s).
-	inferred  86 Multiplexer(s).
+	inferred  87 Multiplexer(s).
 Unit <Core> synthesized.
 
 =========================================================================
@@ -195,13 +194,11 @@ Macro Statistics
 # Comparators                                          : 6
  3-bit comparator greater                              : 4
  4-bit comparator greater                              : 2
-# Multiplexers                                         : 86
+# Multiplexers                                         : 87
  1-bit 2-to-1 multiplexer                              : 68
- 3-bit 2-to-1 multiplexer                              : 5
+ 3-bit 2-to-1 multiplexer                              : 6
  4-bit 2-to-1 multiplexer                              : 9
  8-bit 2-to-1 multiplexer                              : 4
-# Xors                                                 : 1
- 1-bit xor2                                            : 1
 
 =========================================================================
 
@@ -230,13 +227,11 @@ Macro Statistics
 # Comparators                                          : 6
  3-bit comparator greater                              : 4
  4-bit comparator greater                              : 2
-# Multiplexers                                         : 86
+# Multiplexers                                         : 87
  1-bit 2-to-1 multiplexer                              : 68
- 3-bit 2-to-1 multiplexer                              : 5
+ 3-bit 2-to-1 multiplexer                              : 6
  4-bit 2-to-1 multiplexer                              : 9
  8-bit 2-to-1 multiplexer                              : 4
-# Xors                                                 : 1
- 1-bit xor2                                            : 1
 
 =========================================================================
 
@@ -245,7 +240,6 @@ Macro Statistics
 =========================================================================
 
 Optimizing unit <Core> ...
-WARNING:Xst:1293 - FF/Latch <CLKDIV.clk_count_2> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
 INFO:Xst:2261 - The FF/Latch <T_REQUEST_CK_SYNC> in Unit <Core> is equivalent to the following FF/Latch, which will be removed : <TRNSMTP> 
 
 Mapping all equations...
@@ -263,8 +257,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 103
- Flip-Flops                                            : 103
+# Registers                                            : 104
+ Flip-Flops                                            : 104
 
 =========================================================================
 
@@ -292,16 +286,16 @@ Primitive and Black Box Usage:
 #      INV                         : 1
 #      LUT2                        : 3
 #      LUT3                        : 12
-#      LUT4                        : 17
-#      LUT5                        : 19
-#      LUT6                        : 86
+#      LUT4                        : 16
+#      LUT5                        : 18
+#      LUT6                        : 88
 #      MUXCY                       : 9
 #      MUXF7                       : 7
 #      VCC                         : 1
-# FlipFlops/Latches                : 103
-#      FD                          : 26
+# FlipFlops/Latches                : 104
+#      FD                          : 29
 #      FDE                         : 8
-#      FDR                         : 9
+#      FDR                         : 7
 #      FDRE                        : 55
 #      FDS                         : 1
 #      FDSE                        : 4
@@ -318,16 +312,16 @@ Selected Device : 6slx16csg324-2
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:             103  out of  18224     0%  
+ Number of Slice Registers:             104  out of  18224     0%  
  Number of Slice LUTs:                  138  out of   9112     1%  
     Number used as Logic:               138  out of   9112     1%  
 
 Slice Logic Distribution: 
  Number of LUT Flip Flop pairs used:    149
-   Number with an unused Flip Flop:      46  out of    149    30%  
+   Number with an unused Flip Flop:      45  out of    149    30%  
    Number with an unused LUT:            11  out of    149     7%  
-   Number of fully used LUT-FF pairs:    92  out of    149    61%  
-   Number of unique control sets:        10
+   Number of fully used LUT-FF pairs:    93  out of    149    62%  
+   Number of unique control sets:         9
 
 IO Utilization: 
  Number of IOs:                          99
@@ -357,7 +351,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-CLK10I                             | BUFGP                  | 103   |
+CLK10I                             | BUFGP                  | 104   |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -380,7 +374,7 @@ All values displayed in nanoseconds (ns)
 =========================================================================
 Timing constraint: Default period analysis for Clock 'CLK10I'
   Clock period: 4.196ns (frequency: 238.322MHz)
-  Total number of paths / destination ports: 1306 / 228
+  Total number of paths / destination ports: 1306 / 227
 -------------------------------------------------------------------------
 Delay:               4.196ns (Levels of Logic = 3)
   Source:            Transmitter.COUNT4_2 (FF)
@@ -393,7 +387,7 @@ Delay:               4.196ns (Levels of Logic = 3)
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
      FD:C->Q               5   0.525   1.069  Transmitter.COUNT4_2 (Transmitter.COUNT4_2)
-     LUT4:I1->O            8   0.235   0.944  TABORTP_Transmitter.COUNT4[2]_AND_8_o1 (TABORTP_Transmitter.COUNT4[2]_AND_8_o)
+     LUT4:I1->O            8   0.235   0.944  TABORTP_Transmitter.COUNT4[2]_AND_7_o1 (TABORTP_Transmitter.COUNT4[2]_AND_7_o)
      LUT6:I5->O            5   0.254   0.841  Mmux_GND_5_o_GND_5_o_mux_157_OUT41 (Mmux_GND_5_o_GND_5_o_mux_157_OUT41)
      LUT5:I4->O            1   0.254   0.000  Mmux_GND_5_o_GND_5_o_mux_157_OUT61 (GND_5_o_GND_5_o_mux_157_OUT<2>)
      FDR:D                     0.074          Transmitter.COUNT10_2
@@ -417,7 +411,7 @@ Offset:              7.408ns (Levels of Logic = 4)
      IBUF:I->O             8   1.328   1.172  RDATAI_1_IBUF (RDATAI_1_IBUF)
      LUT3:I0->O            1   0.235   0.682  RDATAI[7]_PWR_5_o_equal_79_o<7>_SW0 (N10)
      LUT6:I5->O           10   0.254   1.438  RDATAI[7]_PWR_5_o_equal_79_o<7> (RDATAI[7]_PWR_5_o_equal_79_o)
-     LUT6:I1->O           36   0.254   1.586  _n04331 (_n0433)
+     LUT6:I1->O           36   0.254   1.586  _n04471 (_n0447)
      FDRE:R                    0.459          Receiver.ADDRESS_BUFFER_0
     ----------------------------------------
     Total                      7.408ns (2.530ns logic, 4.878ns route)
@@ -458,15 +452,15 @@ CLK10I         |    4.196|         |         |         |
 =========================================================================
 
 
-Total REAL time to Xst completion: 4.00 secs
-Total CPU time to Xst completion: 4.04 secs
+Total REAL time to Xst completion: 19.00 secs
+Total CPU time to Xst completion: 17.80 secs
  
 --> 
 
 
-Total memory usage is 391232 kilobytes
+Total memory usage is 386580 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :    6 (   0 filtered)
-Number of infos    :    2 (   0 filtered)
+Number of warnings :    5 (   0 filtered)
+Number of infos    :    1 (   0 filtered)
 

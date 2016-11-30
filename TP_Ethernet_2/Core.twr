@@ -1,14 +1,13 @@
 --------------------------------------------------------------------------------
-Release 13.4 Trace  (lin64)
-Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+Release 14.7 Trace  (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-/usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/bin/lin64/unwrapped/trce -intstyle ise -v
-3 -s 2 -n 3 -fastpaths -xml Core.twx Core.ncd -o Core.twr Core.pcf -ucf
-Core.ucf
+/opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/unwrapped/trce -intstyle ise -v 3 -s 2 -n
+3 -fastpaths -xml Core.twx Core.ncd -o Core.twr Core.pcf -ucf Core.ucf
 
 Design file:              Core.ncd
 Physical constraint file: Core.pcf
-Device,package,speed:     xc6slx16,csg324,C,-2 (PRODUCTION 1.21 2012-01-07)
+Device,package,speed:     xc6slx16,csg324,C,-2 (PRODUCTION 1.23 2013-10-13)
 Report level:             verbose report
 
 Environment Variable      Effect 
@@ -37,26 +36,26 @@ Setup/Hold to clock CLK10I
             |Max Setup to|  Process   |Max Hold to |  Process   |                  | Clock  |
 Source      | clk (edge) |   Corner   | clk (edge) |   Corner   |Internal Clock(s) | Phase  |
 ------------+------------+------------+------------+------------+------------------+--------+
-RDATAI<0>   |    5.810(R)|      SLOW  |    0.198(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-RDATAI<1>   |    5.702(R)|      SLOW  |    0.416(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-RDATAI<2>   |    5.585(R)|      SLOW  |    0.287(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-RDATAI<3>   |    5.187(R)|      SLOW  |    0.506(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-RDATAI<4>   |    4.895(R)|      SLOW  |    0.042(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-RDATAI<5>   |    5.293(R)|      SLOW  |   -0.348(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-RDATAI<6>   |    5.383(R)|      SLOW  |   -0.276(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-RDATAI<7>   |    5.222(R)|      SLOW  |   -0.344(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-RENABP      |    3.980(R)|      SLOW  |    0.243(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-TABORTP     |    3.757(R)|      SLOW  |   -0.728(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TAVAILP     |    3.427(R)|      SLOW  |   -0.097(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-TDATAI<0>   |    1.634(R)|      SLOW  |   -0.377(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-TDATAI<1>   |    2.389(R)|      SLOW  |   -0.814(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAI<2>   |    1.856(R)|      SLOW  |   -0.678(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAI<3>   |    2.043(R)|      SLOW  |   -0.630(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAI<4>   |    1.675(R)|      SLOW  |   -0.527(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-TDATAI<5>   |    2.253(R)|      SLOW  |   -0.668(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAI<6>   |    1.776(R)|      SLOW  |   -0.635(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAI<7>   |    1.209(R)|      SLOW  |   -0.063(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
-TLASTP      |    5.018(R)|      SLOW  |   -0.343(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+RDATAI<0>   |    5.430(R)|      SLOW  |   -0.263(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+RDATAI<1>   |    5.500(R)|      SLOW  |    0.424(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+RDATAI<2>   |    5.280(R)|      SLOW  |   -0.268(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+RDATAI<3>   |    5.230(R)|      SLOW  |    0.025(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+RDATAI<4>   |    5.111(R)|      SLOW  |   -0.218(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+RDATAI<5>   |    5.243(R)|      SLOW  |   -0.114(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+RDATAI<6>   |    5.387(R)|      SLOW  |   -0.284(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+RDATAI<7>   |    5.200(R)|      SLOW  |   -0.154(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+RENABP      |    3.556(R)|      SLOW  |   -0.202(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+TABORTP     |    4.124(R)|      SLOW  |   -0.699(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TAVAILP     |    4.279(R)|      SLOW  |   -0.869(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAI<0>   |    1.098(R)|      SLOW  |    0.278(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+TDATAI<1>   |    2.459(R)|      SLOW  |   -0.897(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAI<2>   |    1.559(R)|      SLOW  |   -0.492(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+TDATAI<3>   |    1.653(R)|      SLOW  |   -0.360(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+TDATAI<4>   |    1.648(R)|      SLOW  |   -0.424(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAI<5>   |    2.987(R)|      SLOW  |   -1.218(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAI<6>   |    1.547(R)|      SLOW  |   -0.480(R)|      SLOW  |CLK10I_BUFGP      |   0.000|
+TDATAI<7>   |    2.033(R)|      SLOW  |   -0.624(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TLASTP      |    4.781(R)|      SLOW  |   -0.922(R)|      FAST  |CLK10I_BUFGP      |   0.000|
 ------------+------------+------------+------------+------------+------------------+--------+
 
 Clock CLK10I to Pad
@@ -64,33 +63,33 @@ Clock CLK10I to Pad
             |Max (slowest) clk|  Process   |Min (fastest) clk|  Process   |                  | Clock  |
 Destination |  (edge) to PAD  |   Corner   |  (edge) to PAD  |   Corner   |Internal Clock(s) | Phase  |
 ------------+-----------------+------------+-----------------+------------+------------------+--------+
-CLKDIV8_UP  |         8.556(R)|      SLOW  |         3.466(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-RBYTEP      |         8.871(R)|      SLOW  |         3.642(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-RCLEANP     |         9.036(R)|      SLOW  |         3.706(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-RCVNGP      |         9.038(R)|      SLOW  |         3.761(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-RDATAO<0>   |         8.905(R)|      SLOW  |         3.649(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+CLKDIV8_UP  |         8.311(R)|      SLOW  |         3.282(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+RBYTEP      |         8.587(R)|      SLOW  |         3.500(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+RCLEANP     |         9.220(R)|      SLOW  |         3.813(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+RCVNGP      |         9.221(R)|      SLOW  |         3.910(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+RDATAO<0>   |         8.609(R)|      SLOW  |         3.472(R)|      FAST  |CLK10I_BUFGP      |   0.000|
 RDATAO<1>   |         9.205(R)|      SLOW  |         3.860(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-RDATAO<2>   |         9.436(R)|      SLOW  |         3.992(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+RDATAO<2>   |         8.827(R)|      SLOW  |         3.597(R)|      FAST  |CLK10I_BUFGP      |   0.000|
 RDATAO<3>   |         9.255(R)|      SLOW  |         3.910(R)|      FAST  |CLK10I_BUFGP      |   0.000|
 RDATAO<4>   |         8.424(R)|      SLOW  |         3.395(R)|      FAST  |CLK10I_BUFGP      |   0.000|
 RDATAO<5>   |         8.761(R)|      SLOW  |         3.550(R)|      FAST  |CLK10I_BUFGP      |   0.000|
 RDATAO<6>   |         8.681(R)|      SLOW  |         3.561(R)|      FAST  |CLK10I_BUFGP      |   0.000|
 RDATAO<7>   |         8.476(R)|      SLOW  |         3.432(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-RDONEP      |         8.299(R)|      SLOW  |         3.329(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-RSMATIP     |         8.993(R)|      SLOW  |         3.703(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAO<0>   |         8.482(R)|      SLOW  |         3.372(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAO<1>   |         8.790(R)|      SLOW  |         3.552(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAO<2>   |         8.579(R)|      SLOW  |         3.434(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAO<3>   |         9.014(R)|      SLOW  |         3.651(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAO<4>   |         8.754(R)|      SLOW  |         3.509(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAO<5>   |         9.133(R)|      SLOW  |         3.708(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAO<6>   |         8.995(R)|      SLOW  |         3.649(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDATAO<7>   |         9.257(R)|      SLOW  |         3.813(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TDONEP      |         8.733(R)|      SLOW  |         3.564(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TREADDP     |         8.578(R)|      SLOW  |         3.463(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TRNSMTP     |         8.569(R)|      SLOW  |         3.476(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TSOCOLP     |         8.783(R)|      SLOW  |         3.592(R)|      FAST  |CLK10I_BUFGP      |   0.000|
-TSTARTP     |         8.676(R)|      SLOW  |         3.507(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+RDONEP      |         8.504(R)|      SLOW  |         3.458(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+RSMATIP     |         8.784(R)|      SLOW  |         3.593(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAO<0>   |         8.947(R)|      SLOW  |         3.633(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAO<1>   |         8.704(R)|      SLOW  |         3.471(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAO<2>   |         8.695(R)|      SLOW  |         3.479(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAO<3>   |         8.670(R)|      SLOW  |         3.459(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAO<4>   |         8.753(R)|      SLOW  |         3.515(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAO<5>   |         8.767(R)|      SLOW  |         3.539(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAO<6>   |         8.533(R)|      SLOW  |         3.396(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDATAO<7>   |         8.530(R)|      SLOW  |         3.393(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TDONEP      |         9.274(R)|      SLOW  |         3.845(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TREADDP     |         8.697(R)|      SLOW  |         3.604(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TRNSMTP     |         9.182(R)|      SLOW  |         3.880(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TSOCOLP     |         9.489(R)|      SLOW  |         4.068(R)|      FAST  |CLK10I_BUFGP      |   0.000|
+TSTARTP     |         9.717(R)|      SLOW  |         4.176(R)|      FAST  |CLK10I_BUFGP      |   0.000|
 ------------+-----------------+------------+-----------------+------------+------------------+--------+
 
 Clock to Setup on destination clock CLK10I
@@ -98,11 +97,11 @@ Clock to Setup on destination clock CLK10I
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-CLK10I         |    4.351|         |         |         |
+CLK10I         |    4.253|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 
-Analysis completed Wed Nov 30 20:30:20 2016 
+Analysis completed Wed Nov 30 23:40:20 2016 
 --------------------------------------------------------------------------------
 
 Trace Settings:

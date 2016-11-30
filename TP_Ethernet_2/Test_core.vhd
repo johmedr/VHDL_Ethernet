@@ -42,7 +42,7 @@ ARCHITECTURE behavior OF Receiver_Test IS
     COMPONENT Core
     PORT(
          RBYTEP : OUT  std_logic;
-			CLKDIV8_UP : out  STD_LOGIC;	
+			CLKDIV8_UP : out  STD_LOGIC;
          RCLEANP : OUT  std_logic;
          RCVNGP : OUT  std_logic;
          RDATAO : OUT  std_logic_vector(7 downto 0);
@@ -150,6 +150,7 @@ BEGIN
 		
 
       -- insert stimulus here 
+
 		
 		RDATAI <= (others=>'1') after 200ns; 
 		RDATAI <= X"AB" after 400ns; 

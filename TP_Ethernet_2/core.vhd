@@ -61,7 +61,6 @@ end Core;
 
 
 architecture Behavioral of Core is
-
 	-- Signaux du diviseur d'horloge
 	signal CLKDIV8 : STD_LOGIC := '0'; 
 	signal CLKDIV_UP : STD_LOGIC := '0'; 
@@ -132,9 +131,9 @@ begin
 		variable ADDRESS_BUFFER : STD_LOGIC_VECTOR (47 downto 0);
 		variable RCOUNT : integer range 6 downto 0; 
 		variable PAUSE_START : STD_LOGIC := '0';
+
 		variable PAUSE : STD_LOGIC := '0';
 		variable ALLOWED_RESET : STD_LOGIC := '1';
-		
 	begin
 		wait until CLK10I'event and CLK10I='1' and RENABP='1'; 	-- CLK10 Sync
 		
@@ -198,6 +197,7 @@ begin
 			end if;
 		end if; 
 		
+
 	end process Receiver; 
 	
 	RSMATIP <= S_RSMATIP; 
@@ -293,6 +293,7 @@ begin
 					elsif DADR_SENT = '1' and TADR_SENT = '0' then 	 	-- CAS adresse dest envoyee
 						if ADRCOUNT < 6 then
 							TDATAO <= HOST_ADDRESS((47 - (ADRCOUNT * 8)) downto (48 - ((ADRCOUNT+1) * 8))); 
+
 							TREADDP <= '1'; 						-- Lecture des data in
 							
 							ADRCOUNT := ADRCOUNT + 1; 
@@ -303,10 +304,12 @@ begin
 							TADR_SENT := '1'; 
 						end if; 		
 						
+
 					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '0' then 	-- CAS 2 adresses envoyees, debut donnees
 						TDATAO <= TDATAI; 
 						TREADDP <= '1'; 						-- Lecture des data in
 					 
+
 						
 					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '1' then 
 						TDATAO <= X"AB"; 
@@ -318,10 +321,12 @@ begin
 						
 					end if;
 				end if;	
+
 			end if; 
 		end if; 
 	end process Transmitter;
 	
+
 	Collision_Detect : process
 	begin 
 		wait until CLK10I'event and CLK10I = '1';		

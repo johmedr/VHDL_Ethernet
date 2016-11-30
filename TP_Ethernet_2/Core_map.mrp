@@ -1,4 +1,4 @@
-Release 14.7 Map P.20131013 (lin64)
+Release 13.4 Map O.87xd (lin64)
 Xilinx Mapping Report File for Design 'Core'
 
 Design Information
@@ -10,7 +10,7 @@ Target Device  : xc6slx16
 Target Package : csg324
 Target Speed   : -2
 Mapper Version : spartan6 -- $Revision: 1.55 $
-Mapped Date    : Wed Nov 30 19:59:34 2016
+Mapped Date    : Wed Nov 30 20:30:01 2016
 
 Design Summary
 --------------
@@ -22,24 +22,20 @@ Slice Logic Utilization:
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                        132 out of   9,112    1%
+  Number of Slice LUTs:                        131 out of   9,112    1%
     Number used as logic:                      131 out of   9,112    1%
       Number using O6 output only:             123
       Number using O5 output only:               0
       Number using O5 and O6:                    8
       Number used as ROM:                        0
     Number used as Memory:                       0 out of   2,176    0%
-    Number used exclusively as route-thrus:      1
-      Number with same-slice register load:      1
-      Number with same-slice carry load:         0
-      Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                    52 out of   2,278    2%
-  Number of MUXCYs used:                        12 out of   4,556    1%
+  Number of occupied Slices:                    51 out of   2,278    2%
+  Nummber of MUXCYs used:                       12 out of   4,556    1%
   Number of LUT Flip Flop pairs used:          144
-    Number with an unused Flip Flop:            44 out of     144   30%
-    Number with an unused LUT:                  12 out of     144    8%
+    Number with an unused Flip Flop:            43 out of     144   29%
+    Number with an unused LUT:                  13 out of     144    9%
     Number of fully used LUT-FF pairs:          88 out of     144   61%
     Number of unique control sets:              10
     Number of slice register sites lost
@@ -81,9 +77,9 @@ Specific Feature Utilization:
 
 Average Fanout of Non-Clock Nets:                5.34
 
-Peak Memory Usage:  665 MB
-Total REAL time to MAP completion:  7 secs 
-Total CPU time to MAP completion:   7 secs 
+Peak Memory Usage:  678 MB
+Total REAL time to MAP completion:  6 secs 
+Total CPU time to MAP completion:   6 secs 
 
 Table of Contents
 -----------------
@@ -106,9 +102,20 @@ Section 1 - Errors
 
 Section 2 - Warnings
 --------------------
+WARNING:Security:43 - No license file was found in the standard Xilinx license
+directory.
+WARNING:Security:44 - Since no license file was found,
+WARNING:Security:42 - Your software subscription period has lapsed. Your current
+version of Xilinx tools will continue to function, but you no longer qualify for
+Xilinx software updates or new releases.
 
 Section 3 - Informational
 -------------------------
+INFO:Security:50 - The XILINXD_LICENSE_FILE environment variable is set to
+'2100@srv-gei-ens1'.
+INFO:Security:52 - The LM_LICENSE_FILE environment variable is set to
+'2100@srv-gei-ens1'.
+INFO:Security:54 - 'xc6slx16' is a WebPack part.
 INFO:LIT:243 - Logical network NOADDRI<47> has no load.
 INFO:LIT:395 - The above info message is repeated 50 more times for the
    following (max. 5 shown):

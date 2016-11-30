@@ -1,0 +1,2 @@
+vhdl work "netgen/par/Core_timesim.vhd"
+vhdl work "Test_core.vhd"

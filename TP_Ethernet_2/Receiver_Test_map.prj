@@ -1,0 +1,2 @@
+vhdl work "netgen/map/Core_map.vhd"
+vhdl work "Test_core.vhd"

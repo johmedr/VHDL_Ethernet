@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# PlanAhead v13.4 (64-bit)
+# Build 157570 by hdbuild on Fri Dec 16 12:49:33 MST 2011
+# Start of session at: Wed Nov 30 17:00:30 2016
+# Process ID: 4939
+# Log file: /home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/planAhead_run_1/planAhead.log
+# Journal file: /home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/planAhead_run_1/planAhead.jou
+#-----------------------------------------------------------
+start_gui
+source /home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/pa.fromNcd.tcl
+exit
+stop_gui

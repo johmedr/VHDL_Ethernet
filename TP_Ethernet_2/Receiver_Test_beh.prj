@@ -1,0 +1,2 @@
+vhdl work "core.vhd"
+vhdl work "Test_core.vhd"

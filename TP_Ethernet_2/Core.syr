@@ -1,18 +1,18 @@
-Release 14.7 - xst P.20131013 (lin64)
-Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+Release 13.4 - xst O.87xd (lin64)
+Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
 --> 
 Parameter TMPDIR set to xst/projnav.tmp
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.03 secs
+Total CPU time to Xst completion: 0.06 secs
  
 --> 
 Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.03 secs
+Total CPU time to Xst completion: 0.06 secs
  
 --> 
 Reading design: Core.prj
@@ -104,11 +104,12 @@ Slice Utilization Ratio Delta      : 5
 
 =========================================================================
 
+INFO:Xst - Part-select index evaluated to out of bound value may lead to incorrect synthesis results; it is recommended not to use them in RTL
 
 =========================================================================
 *                          HDL Parsing                                  *
 =========================================================================
-Parsing VHDL file "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" into library work
+Parsing VHDL file "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/core.vhd" into library work
 Parsing entity <Core>.
 Parsing architecture <Behavioral> of entity <core>.
 
@@ -117,16 +118,16 @@ Parsing architecture <Behavioral> of entity <core>.
 =========================================================================
 
 Elaborating entity <Core> (architecture <Behavioral>) from library <work>.
-WARNING:HDLCompiler:871 - "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" Line 70: Using initial value "000100100011010001010110000100100011010001010110" for host_address since it is never assigned
-WARNING:HDLCompiler:1127 - "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" Line 325: Assignment to col_detected ignored, since the identifier is never used
+WARNING:HDLCompiler:871 - "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/core.vhd" Line 69: Using initial value "000100100011010001010110000100100011010001010110" for host_address since it is never assigned
+WARNING:HDLCompiler:1127 - "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/core.vhd" Line 330: Assignment to col_detected ignored, since the identifier is never used
 
 =========================================================================
 *                           HDL Synthesis                               *
 =========================================================================
 
 Synthesizing Unit <Core>.
-    Related source file is "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd".
-WARNING:Xst:647 - Input <NOADDRI> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Related source file is "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/core.vhd".
+WARNING:Xst:647 - Input <NOADDRI<47:0>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <TFINISHP> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
     Found 1-bit register for signal <CLKDIV_UP>.
@@ -138,10 +139,10 @@ WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and 
     Found 1-bit register for signal <RDONEP>.
     Found 1-bit register for signal <R_REQUEST_CK_SYNC>.
     Found 1-bit register for signal <Receiver.PAUSE>.
-    Found 1-bit register for signal <S_RCVNGP>.
+    Found 1-bit register for signal <RCVNGP>.
     Found 48-bit register for signal <Receiver.ADDRESS_BUFFER>.
     Found 3-bit register for signal <Receiver.RCOUNT>.
-    Found 1-bit register for signal <S_RSMATIP>.
+    Found 1-bit register for signal <RSMATIP>.
     Found 8-bit register for signal <RDATAO>.
     Found 4-bit register for signal <Transmitter.COUNT10>.
     Found 1-bit register for signal <TSTARTP>.
@@ -157,14 +158,14 @@ WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and 
     Found 8-bit register for signal <TDATAO>.
     Found 1-bit register for signal <Transmitter.SFD_SENT>.
     Found 1-bit register for signal <Transmitter.TADR_SENT>.
-    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_11_OUT> created at line 173.
+    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_11_OUT> created at line 172.
     Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_114_OUT> created at line 295.
-    Found 3-bit adder for signal <CLKDIV.clk_count[2]_GND_5_o_add_2_OUT> created at line 112.
-    Found 3-bit adder for signal <Receiver.RCOUNT[2]_GND_5_o_add_72_OUT> created at line 174.
+    Found 3-bit adder for signal <CLKDIV.clk_count[2]_GND_5_o_add_2_OUT> created at line 111.
+    Found 3-bit adder for signal <Receiver.RCOUNT[2]_GND_5_o_add_72_OUT> created at line 173.
     Found 4-bit adder for signal <Transmitter.COUNT10[3]_GND_5_o_add_99_OUT> created at line 226.
     Found 3-bit adder for signal <Transmitter.COUNT4[2]_GND_5_o_add_103_OUT> created at line 258.
-    Found 3-bit adder for signal <Transmitter.ADRCOUNT[2]_GND_5_o_add_131_OUT> created at line 298.
-    Found 3-bit comparator greater for signal <Receiver.RCOUNT[2]_PWR_5_o_LessThan_10_o> created at line 171
+    Found 3-bit adder for signal <Transmitter.ADRCOUNT[2]_GND_5_o_add_131_OUT> created at line 299.
+    Found 3-bit comparator greater for signal <Receiver.RCOUNT[2]_PWR_5_o_LessThan_10_o> created at line 170
     Found 4-bit comparator greater for signal <GND_5_o_Transmitter.COUNT10[3]_LessThan_98_o> created at line 225
     Found 4-bit comparator greater for signal <Transmitter.COUNT10[3]_PWR_5_o_LessThan_99_o> created at line 225
     Found 3-bit comparator greater for signal <GND_5_o_Transmitter.COUNT4[2]_LessThan_102_o> created at line 256
@@ -244,7 +245,7 @@ Macro Statistics
 =========================================================================
 
 Optimizing unit <Core> ...
-WARNING:Xst:1710 - FF/Latch <CLKDIV.clk_count_2> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <CLKDIV.clk_count_2> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
 INFO:Xst:2261 - The FF/Latch <T_REQUEST_CK_SYNC> in Unit <Core> is equivalent to the following FF/Latch, which will be removed : <TRNSMTP> 
 
 Mapping all equations...
@@ -416,7 +417,7 @@ Offset:              7.408ns (Levels of Logic = 4)
      IBUF:I->O             8   1.328   1.172  RDATAI_1_IBUF (RDATAI_1_IBUF)
      LUT3:I0->O            1   0.235   0.682  RDATAI[7]_PWR_5_o_equal_79_o<7>_SW0 (N10)
      LUT6:I5->O           10   0.254   1.438  RDATAI[7]_PWR_5_o_equal_79_o<7> (RDATAI[7]_PWR_5_o_equal_79_o)
-     LUT6:I1->O           36   0.254   1.586  _n04461 (_n0446)
+     LUT6:I1->O           36   0.254   1.586  _n04331 (_n0433)
      FDRE:R                    0.459          Receiver.ADDRESS_BUFFER_0
     ----------------------------------------
     Total                      7.408ns (2.530ns logic, 4.878ns route)
@@ -457,15 +458,15 @@ CLK10I         |    4.196|         |         |         |
 =========================================================================
 
 
-Total REAL time to Xst completion: 5.00 secs
-Total CPU time to Xst completion: 5.14 secs
+Total REAL time to Xst completion: 4.00 secs
+Total CPU time to Xst completion: 4.04 secs
  
 --> 
 
 
-Total memory usage is 386584 kilobytes
+Total memory usage is 391232 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :    6 (   0 filtered)
-Number of infos    :    1 (   0 filtered)
+Number of infos    :    2 (   0 filtered)
 

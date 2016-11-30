@@ -156,7 +156,7 @@ BEGIN
 		RENABP <= '0', '1' after 600ns; 
 		RDATAI <= X"AB"; 
 		RENABP <= '1'; 
-		RDATAI <= X"12" after 80ns, X"34" after 2*80ns, X"56" after 3*80ns, X"12" after 4*80ns,X"34" after 5*80ns,X"56" after 6*80ns,X"AB" after 10*80ns,X"AB" after 11*80ns,X"00" after 12*80ns  ;
+		RDATAI <= X"12" after 80ns, X"34" after 2*80ns, X"56" after 3*80ns, X"12" after 4*80ns,X"34" after 5*80ns,X"56" after 6*80ns,X"AB" after 10*80ns,X"00" after 11*80ns,X"AB" after 12*80ns- 20ns,X"12" after 13*80ns- 20ns,X"34" after 14*80ns- 20ns,X"56" after 15*80ns- 20ns,X"AB" after 16*80ns- 20ns  ;
 
 		
 --		TAVAILP <= '0', '1' after 200ns; 

@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2016-11-30T17:40:50</DateModified>
+  <DateModified>2016-11-30T19:59:09</DateModified>
   <ModuleName>Core</ModuleName>
   <SummaryTimeStamp>2016-11-30T16:58:09</SummaryTimeStamp>
-  <SavedFilePath>/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/iseconfig/Core.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/</ImplementationReportsDirectory>
+  <SavedFilePath>/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/iseconfig/Core.xreport</SavedFilePath>
+  <ImplementationReportsDirectory>/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/</ImplementationReportsDirectory>
   <DateInitialized>2016-11-29T10:20:00</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>

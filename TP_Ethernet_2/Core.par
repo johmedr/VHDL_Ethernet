@@ -1,27 +1,14 @@
-Release 13.4 par O.87xd (lin64)
-Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+Release 14.7 par P.20131013 (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-insa-08128::  Wed Nov 30 18:52:31 2016
+yop::  Wed Nov 30 19:59:43 2016
 
 par -w -intstyle ise -ol high -mt off Core_map.ncd Core.ncd Core.pcf 
 
 
 Constraints file: Core.pcf.
-Loading device for application Rf_Device from file '6slx16.nph' in environment /usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/.
+Loading device for application Rf_Device from file '6slx16.nph' in environment /opt/Xilinx/14.7/ISE_DS/ISE/.
    "Core" is an NCD, version 3.2, device xc6slx16, package csg324, speed -2
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-INFO:Security:50 - The XILINXD_LICENSE_FILE environment variable is set to '2100@srv-gei-ens1'.
-INFO:Security:52 - The LM_LICENSE_FILE environment variable is set to '2100@srv-gei-ens1'.
-INFO:Security:54 - 'xc6slx16' is a WebPack part.
-WARNING:Security:43 - No license file was found in the standard Xilinx license directory.
-WARNING:Security:44 - Since no license file was found,
-       please run the Xilinx License Configuration Manager
-       (xlcm or "Manage Xilinx Licenses")
-       to assist in obtaining a license.
-WARNING:Security:42 - Your software subscription period has lapsed. Your current version of Xilinx tools will continue
-to function, but you no longer qualify for Xilinx software updates or new releases.
-
-----------------------------------------------------------------------
 
 Initializing temperature to 85.000 Celsius. (default - Range: 0.000 to 85.000 Celsius)
 Initializing voltage to 1.140 Volts. (default - Range: 1.140 to 1.260 Volts)
@@ -32,33 +19,37 @@ INFO:Par:282 - No user timing constraints were detected or you have set the opti
    reported in the PAR report in this mode. The PAR timing summary will list the performance achieved for each clock.
    Note: For the fastest runtime, set the effort level to "std".  For best performance, set the effort level to "high".
 
-Device speed data version:  "PRODUCTION 1.21 2012-01-07".
+Device speed data version:  "PRODUCTION 1.23 2013-10-13".
 
 
 
 Device Utilization Summary:
 
 Slice Logic Utilization:
-  Number of Slice Registers:                   105 out of  18,224    1%
-    Number used as Flip Flops:                 105
+  Number of Slice Registers:                   103 out of  18,224    1%
+    Number used as Flip Flops:                 103
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                        137 out of   9,112    1%
-    Number used as logic:                      137 out of   9,112    1%
-      Number using O6 output only:             126
+  Number of Slice LUTs:                        132 out of   9,112    1%
+    Number used as logic:                      131 out of   9,112    1%
+      Number using O6 output only:             123
       Number using O5 output only:               0
-      Number using O5 and O6:                   11
+      Number using O5 and O6:                    8
       Number used as ROM:                        0
     Number used as Memory:                       0 out of   2,176    0%
+    Number used exclusively as route-thrus:      1
+      Number with same-slice register load:      1
+      Number with same-slice carry load:         0
+      Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                    48 out of   2,278    2%
-  Nummber of MUXCYs used:                       12 out of   4,556    1%
-  Number of LUT Flip Flop pairs used:          142
-    Number with an unused Flip Flop:            44 out of     142   30%
-    Number with an unused LUT:                   5 out of     142    3%
-    Number of fully used LUT-FF pairs:          93 out of     142   65%
+  Number of occupied Slices:                    52 out of   2,278    2%
+  Number of MUXCYs used:                        12 out of   4,556    1%
+  Number of LUT Flip Flop pairs used:          144
+    Number with an unused Flip Flop:            44 out of     144   30%
+    Number with an unused LUT:                  12 out of     144    8%
+    Number of fully used LUT-FF pairs:          88 out of     144   61%
     Number of slice register sites lost
       to control set restrictions:               0 out of  18,224    0%
 
@@ -106,29 +97,29 @@ Finished initial Timing Analysis.  REAL time: 2 secs
 Starting Router
 
 
-Phase  1  : 879 unrouted;      REAL time: 2 secs 
+Phase  1  : 862 unrouted;      REAL time: 3 secs 
 
-Phase  2  : 816 unrouted;      REAL time: 3 secs 
+Phase  2  : 810 unrouted;      REAL time: 3 secs 
 
-Phase  3  : 316 unrouted;      REAL time: 3 secs 
+Phase  3  : 357 unrouted;      REAL time: 3 secs 
 
-Phase  4  : 316 unrouted; (Par is working to improve performance)     REAL time: 3 secs 
+Phase  4  : 357 unrouted; (Par is working to improve performance)     REAL time: 3 secs 
 
 Updating file: Core.ncd with current fully routed design.
 
-Phase  5  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  5  : 0 unrouted; (Par is working to improve performance)     REAL time: 3 secs 
 
-Phase  6  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  6  : 0 unrouted; (Par is working to improve performance)     REAL time: 3 secs 
 
-Phase  7  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  7  : 0 unrouted; (Par is working to improve performance)     REAL time: 3 secs 
 
-Phase  8  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  8  : 0 unrouted; (Par is working to improve performance)     REAL time: 3 secs 
 
-Phase  9  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  9  : 0 unrouted; (Par is working to improve performance)     REAL time: 3 secs 
 
-Phase 10  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
-Total REAL time to Router completion: 4 secs 
-Total CPU time to Router completion: 3 secs 
+Phase 10  : 0 unrouted; (Par is working to improve performance)     REAL time: 3 secs 
+Total REAL time to Router completion: 3 secs 
+Total CPU time to Router completion: 4 secs 
 
 Partition Implementation Status
 -------------------------------
@@ -148,8 +139,8 @@ Asterisk (*) preceding a constraint indicates it was not met.
   Constraint                                |    Check    | Worst Case |  Best Case | Timing |   Timing   
                                             |             |    Slack   | Achievable | Errors |    Score   
 ----------------------------------------------------------------------------------------------------------
-  Autotimespec constraint for clock net CLK | SETUP       |         N/A|     3.832ns|     N/A|           0
-  10I_BUFGP                                 | HOLD        |     0.409ns|            |       0|           0
+  Autotimespec constraint for clock net CLK | SETUP       |         N/A|     4.012ns|     N/A|           0
+  10I_BUFGP                                 | HOLD        |     0.280ns|            |       0|           0
 ----------------------------------------------------------------------------------------------------------
 
 
@@ -168,7 +159,7 @@ All signals are completely routed.
 Total REAL time to PAR completion: 4 secs 
 Total CPU time to PAR completion: 4 secs 
 
-Peak Memory Usage:  624 MB
+Peak Memory Usage:  615 MB
 
 Placer: Placement generated during map.
 Routing: Completed - No errors found.

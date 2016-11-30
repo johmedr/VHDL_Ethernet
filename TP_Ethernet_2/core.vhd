@@ -235,7 +235,7 @@ begin
 			TRNSMTP <= '1'; 						-- 
 			TSTARTP <= '1'; 						-- Début trans
 			COUNT10 := 1; 
-			TDATAO <= X"AB"; 						-- EFD
+			--TDATAO <= X"AB"; 						-- EFD
 			T_REQUEST_CK_SYNC <= '1'; 					-- Sync Clock
 			ADRCOUNT := 0; 
 			DADR_SENT := '0';

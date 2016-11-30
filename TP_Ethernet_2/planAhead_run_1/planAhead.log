@@ -1,0 +1,89 @@
+#-----------------------------------------------------------
+# PlanAhead v13.4 (64-bit)
+# Build 157570 by hdbuild on Fri Dec 16 12:49:33 MST 2011
+# Start of session at: Wed Nov 30 17:00:30 2016
+# Process ID: 4939
+# Log file: /home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/planAhead_run_1/planAhead.log
+# Journal file: /home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/planAhead_run_1/planAhead.jou
+#-----------------------------------------------------------
+INFO: [Common-78] Attempting to get a license: PlanAhead
+INFO: [Common-82] Got a license: PlanAhead
+INFO: [Common-86] Your PlanAhead license expires in -791 day(s)
+INFO: [Device-25] Loading parts and site information from /usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/parts/arch.xmlParsing RTL primitives file [/usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/parts/xilinx/rtl/prims/rtl_prims.xml]
+Finished parsing RTL primitives file [/usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/parts/xilinx/rtl/prims/rtl_prims.xml]
+start_gui
+source /home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/pa.fromNcd.tcl
+# create_project -name TP_Ethernet_2 -dir "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/planAhead_run_2" -part xc6slx16csg324-2
+Parsing template File [/usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/data/projnav/templates/verilog.xml].
+Finished parsing template File [/usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/data/projnav/templates/verilog.xml].
+Parsing template File [/usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/data/projnav/templates/vhdl.xml].
+Finished parsing template File [/usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/data/projnav/templates/vhdl.xml].
+Parsing template File [/usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/data/projnav/templates/ucf.xml].
+Finished parsing template File [/usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/data/projnav/templates/ucf.xml].
+# set srcset [get_property srcset [current_run -impl]]
+# set_property design_mode GateLvl $srcset
+# set_property edif_top_file "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ngc" [ get_property srcset [ current_run ] ]
+# add_files -norecurse { {/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2} }
+# set_property target_constrs_file "Core.ucf" [current_fileset -constrset]
+Adding file '/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ucf' to fileset 'constrs_1'
+# add_files [list {Core.ucf}] -fileset [get_property constrset [current_run]]
+# open_netlist_design
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+Design is defaulting to part: xc6slx16csg324-2
+WARNING: fr_FR.UTF-8 is not supported as a language.  Using usenglish.
+Release 13.4 - ngc2edif O.87xd (lin64)
+Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+
+Release 13.4 - ngc2edif O.87xd (lin64)
+Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+Reading design Core.ngc ...
+WARNING:NetListWriters:298 - No output is written to Core.xncf, ignored.
+Processing design ...
+   Preping design's networks ...
+   Preping design's macros ...
+WARNING:NetListWriters:306 - Signal bus TDATAO[7]_PWR_5_o_mux_129_OUT<6 : 1> on
+   block Core is not reconstructed, because there are some missing bus signals.
+  finished :Prep
+Writing EDIF netlist file Core.edif ...
+ngc2edif: Total memory usage is 103672 kilobytes
+
+Parsing EDIF File [./planAhead_run_2/TP_Ethernet_2.data/cache/Core_ngc_65c3ad21.edif]
+Finished Parsing EDIF File [./planAhead_run_2/TP_Ethernet_2.data/cache/Core_ngc_65c3ad21.edif]
+INFO: [Netlist-17] Analyzing 1 Unisim elements for replacement
+INFO: [Netlist-28] Unisim Transformation completed in 0 CPU seconds
+Loading clock regions from /usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/parts/xilinx/spartan6/spartan6lx/xc6slx16/ClockRegion.xml
+Loading clock buffers from /usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/parts/xilinx/spartan6/spartan6lx/xc6slx16/ClockBuffers.xml
+Loading package pin functions from /usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/parts/xilinx/spartan6/PinFunctions.xml...
+Loading package from /usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/parts/xilinx/spartan6/spartan6lx/xc6slx16/csg324/Package.xml
+Loading io standards from /usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/./parts/xilinx/spartan6/IOStandards.xml
+Loading device configuration modes from /usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/parts/xilinx/spartan6/ConfigModes.xml
+Loading list of drcs for the architecture : /usr/local/Xilinx.ISE/13.4/ISE_DS/PlanAhead/./parts/xilinx/spartan6/drc.xml
+Parsing UCF File [/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ucf]
+Finished Parsing UCF File [/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ucf]
+INFO: [PlanAhead-566] Unisim Transformation Summary:
+  A total of 1 instances were transformed.
+  BUFGP => BUFGP (IBUFG, BUFG): 1 instances
+open_netlist_design: Time (s): 7.770u 0.120s 8.150w. Memory (MB): 4536.598p 160.098g
+# read_xdl -file "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ncd"
+WARNING: fr_FR.UTF-8 is not supported as a language.  Using usenglish.
+Release 13.4 - xdl O.87xd (lin64)
+Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+
+WARNING:XDL:213 - The resulting xdl output will not have LUT equation strings or RAM INIT strings.
+Loading device for application Rf_Device from file '6slx16.nph' in environment /usr/local/Xilinx.ISE/13.4/ISE_DS/ISE/.
+   "Core" is an NCD, version 3.2, device xc6slx16, package csg324, speed -2
+Successfully converted design '/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ncd' to '/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.xdl'.
+INFO: [Designutils-669] Parsing Placement File : /home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ncd
+ERROR: [Designutils-668] Parser error at line 1, continuing with parsing
+INFO: [Designutils-658] Finished Parsing Placement File : /home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ncd
+INFO: [Designutils-671] Placed 0 instances
+ERROR: [Common-39] 'read_xdl' failed due to earlier errors.
+
+    while executing
+"read_xdl -file "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ncd""
+    (file "/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/pa.fromNcd.tcl" line 12)
+exit
+stop_gui
+INFO: [PlanAhead-261] Exiting PlanAhead...
+INFO: [Common-83] Releasing license: PlanAhead

@@ -82,6 +82,10 @@ architecture Behavioral of Core is
 	
 begin
 		
+		
+------------------------------------------------------------------------
+--                     DIVISEUR D'HORLOGE                             --
+------------------------------------------------------------------------
 	CLKDIV : process
 	
 		variable clk_count : INTEGER RANGE 0 TO 4; 
@@ -108,13 +112,18 @@ begin
 		if clk_count = 4 then 	-- Si l'horloge était à 0, elle va passer à 1 => front montant 
 			CLKDIV8 <= not CLKDIV8; 		-- Toggle
 			clk_count := 0; 					-- Reset du compteur 
---		else
---			clk_count := clk_count + 1;		--	Compte 8 tics d'horloge
+
 		end if; 
 		
 		CLKDIV8_UP <= CLKDIV_UP;
 	end process CLKDIV; 
 	
+	
+------------------------ end DIVISEUR HORLOGE --------------------------
+	
+------------------------------------------------------------------------
+--                       	PARTIE RECEPTION                           --
+------------------------------------------------------------------------
 	-- Processus de reception
 	Receiver : process
 		variable ADDRESS_BUFFER : STD_LOGIC_VECTOR (47 downto 0);
@@ -154,12 +163,6 @@ begin
 			
 		elsif S_RCVNGP = '1' and S_RSMATIP='0' then 					-- Réception débuté, controle adresse dest. 
 		
-		   -- [TODO] Check this
---			if PAUSE_START = '1' then
---				if CLKDIV_UP = '1' then
---					PAUSE_START := '0';
---				end if ;
---			else 
 				if RCOUNT < 6 then													-- Réception de l'addresse destinataire
 					if CLKDIV_UP = '1' then 											-- Sync sur front montant CLKDIV 
 						ADDRESS_BUFFER((47 - (RCOUNT * 8)) downto (48 - ((RCOUNT+1) * 8))) :=  RDATAI(7 downto 0); 
@@ -173,9 +176,7 @@ begin
 						S_RSMATIP <= '1'; 													-- Adresse valide, suite lecture
 					end if;
 				end if; 
---			end if;
-				
-			
+
 		elsif S_RCVNGP = '1' and S_RSMATIP = '1' then				-- Adresse dest. valide, suite lecture 
 			if CLKDIV_UP = '1' then 											-- Sync sur front montant CLKDIV
 				if RDATAI=X"AB" then													-- Test de End Frame Delimiter
@@ -196,21 +197,33 @@ begin
 	
 	RSMATIP <= S_RSMATIP; 
 	RCVNGP <= S_RCVNGP; 
+--------------------------- end RECEPTION --------------------------------
 	
+------------------------------------------------------------------------
+--                       	PARTIE EMISSION                            --
+------------------------------------------------------------------------
 	-- Processus de transmittion
 	Transmitter : process
 		variable ADRCOUNT : integer range 6 downto 0; 
-		variable PAUSE_START : STD_LOGIC := '0';
-		variable PAUSE_END : STD_LOGIC := '0';
 		variable COUNT4 : integer range 5 downto 0;	-- Count for error 
+		variable COUNT10 : integer range 10 downto 0; -- Count for time (100 ns) 
 		variable TRON : STD_LOGIC := '0'; -- TRON : 1 -> transmitting, 0 -> wait
 		variable DADR_SENT : STD_LOGIC := '0'; 
 		variable TADR_SENT : STD_LOGIC := '0'; 
+		variable SFD_SENT : STD_LOGIC := '0'; 
+		
 		
 	begin
 		wait until CLK10I'event and CLK10I='1'; 	-- CLK10 Sync
 		
-		TSTARTP <= '0'; 
+		if COUNT10 > 0 and COUNT10 < 10 then 
+			COUNT10 := COUNT10 + 1; 
+		else 
+			COUNT10 := 0; 
+			TSTARTP <= '0'; 
+			TDONEP <= '0'; 
+		end if; 
+		
 		TRNSMTP <= '0'; 
 		TREADDP <= '0'; 
 		T_REQUEST_CK_SYNC <= '0'; 
@@ -221,6 +234,7 @@ begin
 			TRON := '1'; 
 			TRNSMTP <= '1'; 						-- 
 			TSTARTP <= '1'; 						-- Début trans
+			COUNT10 := 1; 
 			TDATAO <= X"AB"; 						-- EFD
 			T_REQUEST_CK_SYNC <= '1'; 					-- Sync Clock
 			ADRCOUNT := 0; 
@@ -234,6 +248,7 @@ begin
 				if (TABORTP = '1' or COUNT4 > 0) and COUNT4 < 5 then -- Pulse abandon ou comptage commencé et pas fini
 					TDATAO <= X"AA"; 
 					COUNT4 := COUNT4 + 1; 
+					-- À compléter
 					if COUNT4 = 4 then 
 						TRON := '0'; 
 						COUNT4 := 0;
@@ -241,13 +256,20 @@ begin
 					
 				else
 				
-					TREADDP <= '1'; 						-- Lecture des data in
+					if SFD_SENT = '0' then 
+						TDATAO <= X"AB"; 
+						SFD_SENT := '1'; 
 					
-					if DADR_SENT = '0' and TADR_SENT = '0' then 			-- CAS aucune adresse envoyee
+					
+					elsif DADR_SENT = '0' and TADR_SENT = '0' then 			-- CAS aucune adresse envoyee
 						if ADRCOUNT < 6 then
 							TDATAO <= TDATAI; 
+							TREADDP <= '1'; 						-- Lecture des data in
+							
 							ADRCOUNT := ADRCOUNT + 1; 
-						else 
+						end if;
+						
+						if ADRCOUNT = 6 then 
 							ADRCOUNT := 0; 
 							DADR_SENT := '1'; 
 						end if; 
@@ -255,21 +277,30 @@ begin
 					elsif DADR_SENT = '1' and TADR_SENT = '0' then 	 	-- CAS adresse dest envoyee
 						if ADRCOUNT < 6 then
 							TDATAO <= HOST_ADDRESS((47 - (ADRCOUNT * 8)) downto (48 - ((ADRCOUNT+1) * 8))); 
+							TREADDP <= '1'; 						-- Lecture des data in
+							
 							ADRCOUNT := ADRCOUNT + 1; 
-						else 
+						end if; 
+						
+						if ADRCOUNT = 6 then 
 							ADRCOUNT := 0; 
 							TADR_SENT := '1'; 
 						end if; 		
 						
 					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '0' then 	-- CAS 2 adresses envoyees, debut donnees
 						TDATAO <= TDATAI; 
+						TREADDP <= '1'; 						-- Lecture des data in
+					 
 						
 					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '1' then 
+						
 						TDATAO <= X"AB"; 
 						TDONEP <= '1'; 
+						COUNT10 := 1;
 						DADR_SENT := '0'; 
 						TADR_SENT := '0'; 
 						TRON := '0'; 
+						
 					end if;
 				end if; 
 			end if; 
@@ -278,9 +309,7 @@ begin
 	
 	Collision_Detect : process
 	begin 
-		wait until CLK10I'event and CLK10I = '1'; 
-
-		
+		wait until CLK10I'event and CLK10I = '1'; 		
 		if SENDING /= '0' and RECEIVING /= '0' then 
 			TSOCOLP <= '1'; 
 		else 

@@ -63,7 +63,7 @@ end Core;
 architecture Behavioral of Core is
 
 	-- Signaux du diviseur d'horloge
-	signal CLKDIV8 : STD_LOGIC; 
+	signal CLKDIV8 : STD_LOGIC := '0'; 
 	signal CLKDIV_UP : STD_LOGIC := '0'; 
 	
 	-- Adresse MAC de l'hote
@@ -83,8 +83,10 @@ architecture Behavioral of Core is
 begin
 		
 	CLKDIV : process
-		variable clk_count : INTEGER RANGE 0 TO 3; 
-		variable CLKDIV_RST : STD_LOGIC := '0'; 
+	
+		variable clk_count : INTEGER RANGE 0 TO 4; 
+		variable CLKDIV_RST : STD_LOGIC; 
+		
 	begin
 		wait until CLK10I'event and CLK10I='1'; 
 		
@@ -100,14 +102,16 @@ begin
 			CLKDIV_UP <= '1'; 
 		end if;
 		
+		clk_count := clk_count + 1;		--	Compte 8 tics d'horloge
+
 		-- Fonctionnement normal	
-		if clk_count = 0 then 	-- Si l'horloge était à 0, elle va passer à 1 => front montant 
+		if clk_count = 4 then 	-- Si l'horloge était à 0, elle va passer à 1 => front montant 
 			CLKDIV8 <= not CLKDIV8; 		-- Toggle
 			clk_count := 0; 					-- Reset du compteur 
-		else
-			clk_count := clk_count + 1;		--	Compte 8 tics d'horloge
+--		else
+--			clk_count := clk_count + 1;		--	Compte 8 tics d'horloge
 		end if; 
-
+		
 		CLKDIV8_UP <= CLKDIV_UP;
 	end process CLKDIV; 
 	
@@ -116,7 +120,8 @@ begin
 		variable ADDRESS_BUFFER : STD_LOGIC_VECTOR (47 downto 0);
 		variable RCOUNT : integer range 6 downto 0; 
 		variable PAUSE_START : STD_LOGIC := '0';
-		variable PAUSE_END : STD_LOGIC := '0';
+		variable PAUSE : STD_LOGIC := '0';
+		variable ALLOWED_RESET : STD_LOGIC := '1';
 		--variable COUNT8 : integer range 0 downto 7; 
 	begin
 		wait until CLK10I'event and CLK10I='1' and RENABP='1'; 	-- CLK10 Sync
@@ -125,28 +130,36 @@ begin
 		RBYTEP <= '0'; 
 		RDONEP <= '0'; 
 		R_REQUEST_CK_SYNC <= '0';
+		ALLOWED_RESET := '1';
 		
-		if PAUSE_END = '1' then
-			if CLKDIV_UP = '1' then
-				PAUSE_END := '0';
-			end if ;
-		 
-		elsif RDATAI=X"AB" and S_RCVNGP='0' and S_RSMATIP='0' then  -- Start Frame Delimiter
-			S_RCVNGP <= '1';														-- Receiving pulse
-			ADDRESS_BUFFER := (others=>'0');									-- Reset buffer adresse
-			R_REQUEST_CK_SYNC <= '1'; 													-- Sync clock divisé 8 fois
-			RCOUNT := 0; 															-- Reset du compteur
-			PAUSE_START := '1';
-			RECEIVING <= '1';  														-- On est en attente de réception
+		if S_RCVNGP='0' and S_RSMATIP='0' and RDATAI=X"AB" then -- Start Frame Delimiter
+		
+			if PAUSE = '1' then
+				if CLKDIV_UP = '1' then
+					PAUSE := '0';
+					ALLOWED_RESET := '0';
+				end if; 
+			end if; 
+			
+			if PAUSE = '0' then
+				S_RCVNGP <= '1';														-- Receiving pulse
+				ADDRESS_BUFFER := (others=>'0');									-- Reset buffer adresse
+				if ALLOWED_RESET = '1' then
+					R_REQUEST_CK_SYNC <= '1'; 													-- Sync clock divisé 8 fois
+				end if;
+				RCOUNT := 0; 															-- Reset du compteur
+				PAUSE_START := '1';
+				RECEIVING <= '1';  														-- On est en attente de réception
+			end if;
 			
 		elsif S_RCVNGP = '1' and S_RSMATIP='0' then 					-- Réception débuté, controle adresse dest. 
 		
 		   -- [TODO] Check this
-			if PAUSE_START = '1' then
-				if CLKDIV_UP = '1' then
-					PAUSE_START := '0';
-				end if ;
-			else 
+--			if PAUSE_START = '1' then
+--				if CLKDIV_UP = '1' then
+--					PAUSE_START := '0';
+--				end if ;
+--			else 
 				if RCOUNT < 6 then													-- Réception de l'addresse destinataire
 					if CLKDIV_UP = '1' then 											-- Sync sur front montant CLKDIV 
 						ADDRESS_BUFFER((47 - (RCOUNT * 8)) downto (48 - ((RCOUNT+1) * 8))) :=  RDATAI(7 downto 0); 
@@ -160,7 +173,7 @@ begin
 						S_RSMATIP <= '1'; 													-- Adresse valide, suite lecture
 					end if;
 				end if; 
-			end if;
+--			end if;
 				
 			
 		elsif S_RCVNGP = '1' and S_RSMATIP = '1' then				-- Adresse dest. valide, suite lecture 
@@ -169,7 +182,7 @@ begin
 					S_RCVNGP <= '0'; 														-- Fin de reception 
 					S_RSMATIP <= '0';														-- 
 					RDONEP <= '1'; 														-- Pulse reception terminée
-					PAUSE_END := '1'; 
+					PAUSE := '1'; 
 					RECEIVING <= '0'; 
 				else 
 					RDATAO <= RDATAI; 

@@ -61,47 +61,57 @@ end Core;
 
 
 architecture Behavioral of Core is
+
+	-- Signaux du diviseur d'horloge
 	signal CLKDIV8 : STD_LOGIC; 
-	signal CLKDIV_RST : STD_LOGIC := '0'; 
 	signal CLKDIV_UP : STD_LOGIC := '0'; 
 	
+	-- Adresse MAC de l'hote
 	signal HOST_ADDRESS : STD_LOGIC_VECTOR (47 downto 0) := X"123456123456"; 
+	
 	signal S_RSMATIP : STD_LOGIC :='0';
 	signal S_RCVNGP : STD_LOGIC := '0'; 
 	
+	-- Jeton envoi/reception, mis à un par l'emetteur/le recepteur. 
 	signal SENDING : STD_LOGIC := '0'; 
 	signal RECEIVING : STD_LOGIC := '0'; 
 	
+	-- Requete de synchronisation diviseur d'horloge
 	signal T_REQUEST_CK_SYNC : STD_LOGIC := '0'; 
 	signal R_REQUEST_CK_SYNC : STD_LOGIC := '0'; 
+	
 begin
-	
-	CLKDIV_RST <= T_REQUEST_CK_SYNC xor R_REQUEST_CK_SYNC; 
-	
+		
 	CLKDIV : process
 		variable clk_count : INTEGER RANGE 0 TO 3; 
+		variable CLKDIV_RST : STD_LOGIC := '0'; 
 	begin
 		wait until CLK10I'event and CLK10I='1'; 
 		
+		CLKDIV_RST := T_REQUEST_CK_SYNC xor R_REQUEST_CK_SYNC; 
 		CLKDIV_UP <= '0'; 
 		
 		if CLKDIV_RST = '1' then 			-- Reset de l'horloge
 			CLKDIV8 <= '0'; 
 			clk_count := 0; 
-		else 										-- Fonctionnement normal	
-			if clk_count = 0 then 	-- Si l'horloge était à 0, elle va passer à 1 => front montant 
-				CLKDIV8 <= not CLKDIV8; 		-- Toggle
-				clk_count := 0; 					-- Reset du compteur 
-			else
-				clk_count := clk_count + 1;		--	Compte 8 tics d'horloge
-			end if; 
 		end if; 
+		
 		if clk_count = 0 and CLKDIV8 = '0' then
 			CLKDIV_UP <= '1'; 
 		end if;
+		
+		-- Fonctionnement normal	
+		if clk_count = 0 then 	-- Si l'horloge était à 0, elle va passer à 1 => front montant 
+			CLKDIV8 <= not CLKDIV8; 		-- Toggle
+			clk_count := 0; 					-- Reset du compteur 
+		else
+			clk_count := clk_count + 1;		--	Compte 8 tics d'horloge
+		end if; 
+
 		CLKDIV8_UP <= CLKDIV_UP;
 	end process CLKDIV; 
 	
+	-- Processus de reception
 	Receiver : process
 		variable ADDRESS_BUFFER : STD_LOGIC_VECTOR (47 downto 0);
 		variable RCOUNT : integer range 6 downto 0; 
@@ -174,6 +184,7 @@ begin
 	RSMATIP <= S_RSMATIP; 
 	RCVNGP <= S_RCVNGP; 
 	
+	-- Processus de transmittion
 	Transmitter : process
 		variable ADRCOUNT : integer range 6 downto 0; 
 		variable PAUSE_START : STD_LOGIC := '0';

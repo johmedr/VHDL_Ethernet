@@ -155,19 +155,37 @@ BEGIN
       -- insert stimulus here 
 
 		
-		RDATAI <= (others=>'1') after 200ns; 
-		RDATAI <= X"AB" after 400ns; 
-		RENABP <= '1', '0' after 600ns; 
-		RDATAI <= X"AB"; 
-		--RENABP <= '1'; 
-		RDATAI <= X"12" after 80ns, X"34" after 2*80ns, X"56" after 3*80ns;--, X"12" after 4*80ns,X"34" after 5*80ns,X"56" after 6*80ns,X"AB" after 10*80ns,X"00" after 11*80ns,X"AB" after 12*80ns- 20ns,X"12" after 13*80ns- 20ns,X"34" after 14*80ns- 20ns,X"56" after 15*80ns- 20ns,X"AB" after 16*80ns- 20ns  ;
+--		--RDATAI <= (others=>'1') after 200ns; 
+--		--RDATAI <= X"AB" after 400ns; 
+--		RENABP <= '0', '1' after 2*80ns +10ns;--, '0' after 2*80ns +20ns; 
+--		--RDATAI <= X"AB"; 
+		RENABP <= '1'; 
+--		
+--		-- Test du receiver en temps normal avec un byte entre le EFD et SFD
+		RDATAI <= X"00", 
+		X"AB" after 2*80ns,
+		X"12" after 3*80ns, 	X"34" after 4*80ns, 	X"56" after 5*80ns, 	X"12" after 6*80ns,	X"34" after 7*80ns,	X"56" after 8*80ns,
+		X"01" after 9*80ns,	X"02" after 10*80ns,	X"03" after 11*80ns,
+		X"AB" after 12*80ns,	X"00" after 13*80ns,	X"AB" after 14*80ns,
+		X"12" after 15*80ns,	X"34" after 16*80ns,	X"56" after 17*80ns,	X"12" after 18*80ns,	X"34" after 19*80ns,	X"56" after 20*80ns,
+		X"AB" after 21*80ns,	X"00" after 22*80ns;
 	
+		wait for 2000 ns;	
+		-- Test du receiver en temps normal sans byte entre le EFD et SFD
+		RDATAI <= X"00", 
+		X"AB" after 2*80ns,
+		X"12" after 3*80ns, 	X"34" after 4*80ns, 	X"56" after 5*80ns, 	X"12" after 6*80ns,	X"34" after 7*80ns,	X"56" after 8*80ns,
+		X"01" after 9*80ns,	X"02" after 10*80ns,	X"03" after 11*80ns,
+		X"AB" after 12*80ns,	X"AB" after 13*80ns,
+		X"12" after 14*80ns,	X"34" after 15*80ns,	X"56" after 16*80ns,	X"12" after 17*80ns,	X"34" after 18*80ns,	X"56" after 19*80ns,
+		X"AB" after 20*80ns;
+		 
 		TAVAILP <= '0', '1' after 200ns;
-		TDATAI <= X"12" after 80ns, X"34" after 2*80ns, X"56" after 3*80ns, X"12" after 4*80ns,X"34" after 5*80ns;
-		TLASTP <= '0', '1' after 5*80ns; 
-		TABORTP <= '0', '1' after 7*80ns, '0' after 7*80ns+10ns;
+		TDATAI <= X"12" after 80ns, X"34" after 2*80ns, X"56" after 3*80ns, X"12" after 4*80ns,X"34" after 5*80ns; 
+		TLASTP <= '0', '1' after 1500ns, '0' after 1580ns; 
+		TABORTP <= '0', '1' after 1500ns+4*80ns, '0' after 1500ns+5*80ns; 
 		
       wait;
-   end process;
+   end process; 
 
 END;

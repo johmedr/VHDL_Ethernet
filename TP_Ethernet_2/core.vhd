@@ -21,6 +21,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL; 
 use IEEE.STD_LOGIC_ARITH.ALL;
+--use IEEE.NUMERIC_STD.ALL; 
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -59,13 +60,14 @@ entity Core is
            NOADDRI : in  STD_LOGIC_VECTOR (47 downto 0);
            CLKDIV8_UP : out  STD_LOGIC;
            CLK10I : in  STD_LOGIC;
-           RESETN : in  STD_LOGIC);  
+           RESETN : in  STD_LOGIC;
+           COL : out std_logic);  
 end Core;
 
 
 architecture Behavioral of Core is
 	-- Signaux du diviseur d'horloge
-	signal CLKDIV8 : STD_LOGIC := '0';         -- Horloge divisée par 8 
+	signal CLKDIV8 : STD_LOGIC := '0';         -- Horloge divise par 8 
 	signal CLKDIV_UP : STD_LOGIC := '0';       -- HIGH sur front montant de CLKDIV8
 	
 	-- Adresse MAC de l'hote
@@ -75,7 +77,7 @@ architecture Behavioral of Core is
 	signal S_RSMATIP : STD_LOGIC :='0';
 	signal S_RCVNGP : STD_LOGIC := '0'; 
 	
-	-- Jeton envoi/reception, mis à un par l'emetteur/le recepteur. 
+	-- Jeton envoi/reception, mis  un par l'emetteur/le recepteur. 
 	signal SENDING : STD_LOGIC := '0'; 
 	signal RECEIVING : STD_LOGIC := '0'; 
 	
@@ -84,7 +86,7 @@ architecture Behavioral of Core is
 	signal R_REQUEST_CK_SYNC : STD_LOGIC := '0'; 
 	
 	-- Signal de collision detectee, gere par le detecteur de collision
-	signal COL_DETECTED : STD_LOGIC := '0'; 
+    signal T_ALLOWED : STD_LOGIC := '0'; 
 	
 begin
 
@@ -107,17 +109,17 @@ begin
 		
 		-- Synchronisation de l'horloge
 		if CLKDIV_RST = '1' then 
-			CLKDIV8 <= '0';          -- Mise à O de l'horloge (on veut commencer sur front montant) 
+			CLKDIV8 <= '0';          -- Mise  O de l'horloge (on veut commencer sur front montant) 
 			clk_count := 0;          -- Reset du compteur de tics
 		end if; 
 		
-		-- Front montant si clk_count = 0 et que l'on était à l'état bas
+		-- Front montant si clk_count = 0 et que l'on tait  l'tat bas
 -- 		if clk_count = 0 and CLKDIV8 = '1' then
 -- 			CLKDIV_UP <= '1';
 -- 		end if;
 
 -- Fonctionnement normal	
-		if clk_count = 4 then 	-- Si l'horloge était à 0, elle va passer à 1 => front montant 
+		if clk_count = 4 then 	-- Si l'horloge tait  0, elle va passer  1 => front montant 
 			CLKDIV8 <= not CLKDIV8; 		-- Toggle
 			clk_count := 0; 					-- Reset du compteur 
 			if CLKDIV8 = '0' then 
@@ -136,9 +138,9 @@ begin
 	-- Processus de reception
 	Receiver : process
 		variable ADDRESS_BUFFER : STD_LOGIC_VECTOR (47 downto 0);     -- Buffer de stockage pour l'adresse destinataire
-		variable RCOUNT : integer range 6 downto 0;                   -- Compteur pour reception de l'adresse destinataire
+		variable RCOUNT : integer range 6 downto 0 := 0;                   -- Compteur pour reception de l'adresse destinataire
 		variable PAUSE : STD_LOGIC := '0';                            -- Etat pause du recepteur
-		variable ALLOWED_RESET : STD_LOGIC := '1';                    -- Autorisation de resynchroniser l'horloge (LOW quand resync nécessaire) 
+		variable ALLOWED_RESET : STD_LOGIC := '1';                    -- Autorisation de resynchroniser l'horloge (LOW quand resync ncessaire) 
 	begin
 		wait until CLK10I'event and CLK10I='1' and RENABP='1'; 	      -- CLK10I Sync
 		
@@ -147,14 +149,15 @@ begin
 		RDONEP <= '0'; 
 		R_REQUEST_CK_SYNC <= '0';
 		ALLOWED_RESET := '1';
+--		RECEIVING <= '0'; 
 		
 		-- Activation du receiver
 		if RENABP = '1' then 
-		
+
             -- Attente du SFD 
 			if S_RCVNGP='0' and S_RSMATIP='0' and RDATAI=X"AB" then -- Start Frame Delimiter
-			
-                
+            RECEIVING <= '1'; 
+				
 				if PAUSE = '1' then
 					if CLKDIV_UP = '1' then
 						PAUSE := '0';
@@ -164,18 +167,19 @@ begin
 				
 				if PAUSE = '0' then
 				
-                    if ALLOWED_RESET = '1' then
-						R_REQUEST_CK_SYNC <= '1';                  -- Sync clock divisé 8 fois
+               if ALLOWED_RESET = '1' then
+						R_REQUEST_CK_SYNC <= '1';                  -- Sync clock divis 8 fois
 					end if;
 					
 					S_RCVNGP <= '1';	                           -- Receiving pulse
 					ADDRESS_BUFFER := (others=>'0');               -- Reset buffer adresse
-					RECEIVING <= '1';  							   -- On est en attente de réception
+					RCOUNT := 0; 
 					
 				end if;
             
-            -- Réception débuté, controle adresse dest.
+            -- Rception dbut, controle adresse dest.
 			elsif S_RCVNGP = '1' and S_RSMATIP='0' then 
+                    
                     
                     -- Reception de l'adresse destinataire
 					if RCOUNT < 6 then
@@ -185,7 +189,7 @@ begin
 							RCOUNT := RCOUNT + 1; 
 						end if; 
 						
-                    -- Reception de l'adresse terminée, comparaison
+                    -- Reception de l'adresse termine, comparaison
 					else
                         -- Comparaison de l'adresse recu avec celle de l'hote
 						if  ADDRESS_BUFFER /= HOST_ADDRESS then
@@ -195,6 +199,8 @@ begin
 							
 							-- Arret de la reception 
 							S_RCVNGP <= '0';
+							
+							RECEIVING <= '0'; 
 						else 
                             -- Adresse valide, suite lecture
 							S_RSMATIP <= '1'; 
@@ -221,7 +227,7 @@ begin
 						-- On est plus en reception 
 						RECEIVING <= '0'; 
 					else 
-                        -- On est pas à la fin de la trame
+                        -- On est pas  la fin de la trame
                         -- On recopie les donnees lues sur vers l'hote
 						RDATAO <= RDATAI;
 						
@@ -247,9 +253,11 @@ begin
 		variable ADRCOUNT : integer range 6 downto 0;         -- Compteur de la taille de l'adresse
 		variable COUNT4 : integer range 5 downto 0;	          -- Compteur d'envoi message erreur (4bytes 10101010) 
 		variable COUNT10 : integer range 10 downto 0;         -- Compteur pour les pulse 100ns 
-		variable DADR_SENT : STD_LOGIC := '0';                -- Etat adresse destinataire envoyée 
-		variable TADR_SENT : STD_LOGIC := '0';                -- Etat adresse hote envoyée
-		variable SFD_SENT : STD_LOGIC := '0';                 -- Etat SFD envoyé		
+		variable DADR_SENT : STD_LOGIC := '0';                -- Etat adresse destinataire envoye 
+		variable TADR_SENT : STD_LOGIC := '0';                -- Etat adresse hote envoye
+		variable SFD_SENT : STD_LOGIC := '0';                 -- Etat SFD envoye
+		variable SENDING_FAIL : STD_LOGIC := '0'; 
+		variable CAN_START_TRANSMISSION : STD_LOGIC := '0'; 
 		
 	begin
         -- Synchronisation sur CLK10I 
@@ -271,20 +279,26 @@ begin
 		T_REQUEST_CK_SYNC <= '0'; 
 		TSOCOLP <= '0'; 
 		
+		if T_ALLOWED = '0' and SENDING_FAIL = '0' then 
+            SENDING_FAIL := '1'; 
+            
 		-- Demande d'envoi de la part de l'hote, pas d'envoi en cours 
-		if TAVAILP = '1' and SENDING = '0' then
+		elsif TAVAILP = '1' and SENDING = '0' and T_ALLOWED = '1' and CAN_START_TRANSMISSION = '0' then
+			CAN_START_TRANSMISSION := '1'; 
+		
+		elsif TAVAILP = '1' and SENDING = '0' and CAN_START_TRANSMISSION = '1' and T_ALLOWED = '1' then 
 		
 			SENDING <= '1';              -- Etat envoi
-			TRNSMTP <= '1'; 			 -- Pulse transmission 
-			TSTARTP <= '1'; 			 -- Début transmission
-			COUNT10 := 1;                -- Début du timer 100ns 
+			TRNSMTP <= '1'; 			 		-- Pulse transmission 
+			TSTARTP <= '1'; 			 		-- Dbut transmission
+			COUNT10 := 1;                -- Dbut du timer 100ns 
 			T_REQUEST_CK_SYNC <= '1';    -- Demande de synchronisation de l'horloge CLKDIV8 
 			ADRCOUNT := 0;               -- Reset compteur adresse
-			DADR_SENT := '0';            -- Adresse destinataire non envoyée
+			DADR_SENT := '0';            -- Adresse destinataire non envoye
 			COUNT4 := 0;                 -- Reset compteur erreur
 			
         -- Etat d'envoi 
-		elsif SENDING = '1' then
+		elsif SENDING = '1' and T_ALLOWED = '1' then 
 			
 			-- Synchronisation sur CLKDIV8 
 			if CLKDIV_UP = '1' then 
@@ -294,7 +308,7 @@ begin
                     
 					TDATAO <= X"AA";           -- Envoi byte 10101010
 					COUNT4 := COUNT4 + 1;      
-					-- À compléter
+					--  complter
 					if COUNT4 = 4 then         -- Fin de la procedure d'abandon
 						SENDING <= '0';        -- On est plus en envoi
 						COUNT4 := 0;           -- Reset du compteur
@@ -351,7 +365,9 @@ begin
 						DADR_SENT := '0'; 
 						TADR_SENT := '0'; 
 						SENDING <= '0'; 
-						
+						if SENDING_FAIL = '1' then 
+                            TSOCOLP <= '1'; 
+                        end if;
 					end if;
 				end if;	
 
@@ -365,15 +381,57 @@ begin
 --------------------------------------------------------------------------
 
 	Collision_Detect : process
+        variable LFSR_STATE : STD_LOGIC_VECTOR (31 downto 0) := X"1347e3a1"; 
+		  variable NEW_LFSR_STATE : STD_LOGIC_VECTOR (31 downto 0); 
+        variable LFSR_OUTPUT : STD_LOGIC := '0'; 
+        variable LFSR_INPUT : STD_LOGIC := '0';
+        variable LFSR_CONNECT : STD_LOGIC_VECTOR(31 downto 0) := X"01010101";
+        variable TEMP_LFSR_BUFF : STD_LOGIC_VECTOR(31 downto 0); 
+        variable RAND_POS : integer range 0 to 9 := 0; 
+        variable RANDOM_TIME_BITS : STD_LOGIC_VECTOR(8 downto 0) := "011001101"; 
+        variable RANDOM_TIME : integer range 0 to 512; 
+        variable TIME_COUNT : INTEGER range 0 to 512 := 0; 
 	begin 
 		wait until CLK10I'event and CLK10I = '1';		
+		-- COL <= '0';
+		--T_ALLOWED <= '1';
+		-- Generation d'un nombre de periode d'attente aleatoire
+		if RAND_POS < 9 and TIME_COUNT = 0 then
+            TEMP_LFSR_BUFF := LFSR_STATE and LFSR_CONNECT; 
+            for POS in 0 to 31 loop 
+                if POS = 0 then 
+                    LFSR_INPUT := TEMP_LFSR_BUFF(0); 
+                else
+                    LFSR_INPUT := TEMP_LFSR_BUFF(POS) xor LFSR_INPUT; 
+                    NEW_LFSR_STATE(POS) := LFSR_STATE(POS - 1); 
+                end if; 
+            end loop; 
+            NEW_LFSR_STATE(0) := LFSR_INPUT; 
+				LFSR_STATE := NEW_LFSR_STATE; 
+            RANDOM_TIME_BITS(RAND_POS) := LFSR_STATE(31); 
+            RAND_POS := RAND_POS + 1; 
+            RANDOM_TIME := CONV_INTEGER(UNSIGNED(RANDOM_TIME_BITS)); 
+      end if; 
 		
-		if (TAVAILP = '1' and RECEIVING = '1') or (SENDING = '1' and RECEIVING = '1') then 
-			COL_DETECTED <= '1'; 
+		-- Detection d'une collision 
+		if TAVAILP = '1' and RECEIVING = '1' then 
+            TIME_COUNT := 1; 
+            T_ALLOWED <= '0'; 
 		end if; 
+		
+		-- Mise en attente pendant un temps aleatoire
+		if TIME_COUNT > 0 and TIME_COUNT < RANDOM_TIME then 
+            TIME_COUNT := TIME_COUNT + 1; 
+      else
+            T_ALLOWED <= '1'; 
+				RAND_POS := 0;
+				TIME_COUNT := 0;
+		end if; 
+		
 		
 	end process Collision_Detect; 
 	
+	COL <= T_ALLOWED;
 	
 	
 end Behavioral;

@@ -5,14 +5,14 @@ Parameter TMPDIR set to xst/projnav.tmp
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.07 secs
+Total CPU time to Xst completion: 0.04 secs
  
 --> 
 Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.07 secs
+Total CPU time to Xst completion: 0.04 secs
  
 --> 
 Reading design: Core.prj
@@ -117,8 +117,8 @@ Parsing architecture <Behavioral> of entity <core>.
 =========================================================================
 
 Elaborating entity <Core> (architecture <Behavioral>) from library <work>.
-WARNING:HDLCompiler:871 - "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" Line 72: Using initial value "000100100011010001010110000100100011010001010110" for host_address since it is never assigned
-WARNING:HDLCompiler:1127 - "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" Line 341: Assignment to col_detected ignored, since the identifier is never used
+WARNING:HDLCompiler:871 - "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" Line 74: Using initial value "000100100011010001010110000100100011010001010110" for host_address since it is never assigned
+WARNING:HDLCompiler:871 - "/home/yop/Programmation/VHDL/Ethernet/TP_Ethernet_2/core.vhd" Line 387: Using initial value "00000001000000010000000100000001" for lfsr_connect since it is never assigned
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -129,6 +129,8 @@ Synthesizing Unit <Core>.
 WARNING:Xst:647 - Input <NOADDRI> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <TFINISHP> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:3035 - Index value(s) does not match array range for signal <RANDOM_TIME_BITS>, simulation mismatch.
+    Found 9x1-bit single-port RAM <Mram_RANDOM_TIME_BITS> for signal <RANDOM_TIME_BITS>.
     Found 1-bit register for signal <CLKDIV_UP>.
     Found 1-bit register for signal <CLKDIV8>.
     Found 3-bit register for signal <CLKDIV.clk_count>.
@@ -137,6 +139,7 @@ WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and 
     Found 1-bit register for signal <RBYTEP>.
     Found 1-bit register for signal <RDONEP>.
     Found 1-bit register for signal <R_REQUEST_CK_SYNC>.
+    Found 1-bit register for signal <RECEIVING>.
     Found 1-bit register for signal <Receiver.PAUSE>.
     Found 1-bit register for signal <S_RCVNGP>.
     Found 48-bit register for signal <Receiver.ADDRESS_BUFFER>.
@@ -150,6 +153,8 @@ WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and 
     Found 1-bit register for signal <TREADDP>.
     Found 1-bit register for signal <T_REQUEST_CK_SYNC>.
     Found 1-bit register for signal <TSOCOLP>.
+    Found 1-bit register for signal <Transmitter.SENDING_FAIL>.
+    Found 1-bit register for signal <Transmitter.CAN_START_TRANSMISSION>.
     Found 1-bit register for signal <SENDING>.
     Found 3-bit register for signal <Transmitter.ADRCOUNT>.
     Found 1-bit register for signal <Transmitter.DADR_SENT>.
@@ -157,48 +162,69 @@ WARNING:Xst:647 - Input <RESETN> is never used. This port will be preserved and 
     Found 8-bit register for signal <TDATAO>.
     Found 1-bit register for signal <Transmitter.SFD_SENT>.
     Found 1-bit register for signal <Transmitter.TADR_SENT>.
-    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_11_OUT> created at line 185.
-    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_114_OUT> created at line 302.
-    Found 3-bit adder for signal <CLKDIV.clk_count[2]_GND_5_o_add_4_OUT> created at line 134.
-    Found 3-bit adder for signal <Receiver.RCOUNT[2]_GND_5_o_add_72_OUT> created at line 186.
-    Found 4-bit adder for signal <Transmitter.COUNT10[3]_GND_5_o_add_99_OUT> created at line 239.
-    Found 3-bit adder for signal <Transmitter.COUNT4[2]_GND_5_o_add_103_OUT> created at line 271.
-    Found 3-bit adder for signal <Transmitter.ADRCOUNT[2]_GND_5_o_add_131_OUT> created at line 306.
-    Found 3-bit comparator greater for signal <Receiver.RCOUNT[2]_PWR_5_o_LessThan_10_o> created at line 183
-    Found 4-bit comparator greater for signal <GND_5_o_Transmitter.COUNT10[3]_LessThan_98_o> created at line 238
-    Found 4-bit comparator greater for signal <Transmitter.COUNT10[3]_PWR_5_o_LessThan_99_o> created at line 238
-    Found 3-bit comparator greater for signal <GND_5_o_Transmitter.COUNT4[2]_LessThan_102_o> created at line 269
-    Found 3-bit comparator greater for signal <Transmitter.COUNT4[2]_PWR_5_o_LessThan_103_o> created at line 269
-    Found 3-bit comparator greater for signal <Transmitter.ADRCOUNT[2]_PWR_5_o_LessThan_113_o> created at line 301
+    Found 32-bit register for signal <Collision_Detect.LFSR_STATE>.
+    Found 4-bit register for signal <Collision_Detect.RAND_POS>.
+    Found 10-bit register for signal <Collision_Detect.RANDOM_TIME>.
+    Found 10-bit register for signal <Collision_Detect.TIME_COUNT>.
+    Found 1-bit register for signal <T_ALLOWED>.
+    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_10_OUT> created at line 188.
+    Found 7-bit subtractor for signal <GND_5_o_GND_5_o_sub_113_OUT> created at line 344.
+    Found 3-bit adder for signal <CLKDIV.clk_count[2]_GND_5_o_add_3_OUT> created at line 130.
+    Found 3-bit adder for signal <Receiver.RCOUNT[2]_GND_5_o_add_71_OUT> created at line 189.
+    Found 4-bit adder for signal <Transmitter.COUNT10[3]_GND_5_o_add_98_OUT> created at line 268.
+    Found 3-bit adder for signal <Transmitter.COUNT4[2]_GND_5_o_add_102_OUT> created at line 309.
+    Found 3-bit adder for signal <Transmitter.ADRCOUNT[2]_GND_5_o_add_130_OUT> created at line 346.
+    Found 4-bit adder for signal <Collision_Detect.RAND_POS[3]_GND_5_o_add_180_OUT> created at line 411.
+    Found 10-bit adder for signal <Collision_Detect.TIME_COUNT[9]_GND_5_o_add_188_OUT> created at line 423.
+    Found 3-bit comparator greater for signal <Receiver.RCOUNT[2]_PWR_5_o_LessThan_9_o> created at line 185
+    Found 4-bit comparator greater for signal <GND_5_o_Transmitter.COUNT10[3]_LessThan_97_o> created at line 267
+    Found 4-bit comparator greater for signal <Transmitter.COUNT10[3]_PWR_5_o_LessThan_98_o> created at line 267
+    Found 3-bit comparator greater for signal <GND_5_o_Transmitter.COUNT4[2]_LessThan_101_o> created at line 306
+    Found 3-bit comparator greater for signal <Transmitter.COUNT4[2]_PWR_5_o_LessThan_102_o> created at line 306
+    Found 3-bit comparator greater for signal <Transmitter.ADRCOUNT[2]_PWR_5_o_LessThan_112_o> created at line 343
+    Found 4-bit comparator greater for signal <Collision_Detect.RAND_POS[3]_PWR_5_o_LessThan_177_o> created at line 398
+    Found 10-bit comparator greater for signal <GND_5_o_Collision_Detect.TIME_COUNT[9]_LessThan_187_o> created at line 422
+    Found 10-bit comparator greater for signal <Collision_Detect.TIME_COUNT[9]_Collision_Detect.RANDOM_TIME[9]_LessThan_188_o> created at line 422
     Summary:
-	inferred   7 Adder/Subtractor(s).
-	inferred 100 D-type flip-flop(s).
-	inferred   6 Comparator(s).
-	inferred  87 Multiplexer(s).
+	inferred   2 RAM(s).
+	inferred   9 Adder/Subtractor(s).
+	inferred 160 D-type flip-flop(s).
+	inferred   9 Comparator(s).
+	inferred 102 Multiplexer(s).
 Unit <Core> synthesized.
 
 =========================================================================
 HDL Synthesis Report
 
 Macro Statistics
-# Adders/Subtractors                                   : 7
+# RAMs                                                 : 2
+ 0x0-bit quad-port RAM                                 : 1
+ 9x1-bit single-port RAM                               : 1
+# Adders/Subtractors                                   : 9
+ 10-bit adder                                          : 1
  3-bit adder                                           : 4
- 4-bit adder                                           : 1
+ 4-bit adder                                           : 2
  7-bit subtractor                                      : 2
-# Registers                                            : 28
- 1-bit register                                        : 20
+# Registers                                            : 36
+ 1-bit register                                        : 24
+ 10-bit register                                       : 2
  3-bit register                                        : 4
- 4-bit register                                        : 1
+ 32-bit register                                       : 1
+ 4-bit register                                        : 2
  48-bit register                                       : 1
  8-bit register                                        : 2
-# Comparators                                          : 6
+# Comparators                                          : 9
+ 10-bit comparator greater                             : 2
  3-bit comparator greater                              : 4
- 4-bit comparator greater                              : 2
-# Multiplexers                                         : 87
- 1-bit 2-to-1 multiplexer                              : 68
+ 4-bit comparator greater                              : 3
+# Multiplexers                                         : 102
+ 1-bit 2-to-1 multiplexer                              : 79
+ 10-bit 2-to-1 multiplexer                             : 2
  3-bit 2-to-1 multiplexer                              : 6
- 4-bit 2-to-1 multiplexer                              : 9
+ 4-bit 2-to-1 multiplexer                              : 11
  8-bit 2-to-1 multiplexer                              : 4
+# Xors                                                 : 1
+ 1-bit xor32                                           : 1
 
 =========================================================================
 
@@ -209,6 +235,7 @@ Macro Statistics
 
 Synthesizing (advanced) Unit <Core>.
 The following registers are absorbed into counter <Receiver.RCOUNT>: 1 register on signal <Receiver.RCOUNT>.
+The following registers are absorbed into counter <Collision_Detect.RAND_POS>: 1 register on signal <Collision_Detect.RAND_POS>.
 The following registers are absorbed into counter <Transmitter.COUNT4>: 1 register on signal <Transmitter.COUNT4>.
 Unit <Core> synthesized (advanced).
 
@@ -216,21 +243,25 @@ Unit <Core> synthesized (advanced).
 Advanced HDL Synthesis Report
 
 Macro Statistics
-# Adders/Subtractors                                   : 6
+# Adders/Subtractors                                   : 7
+ 10-bit adder                                          : 1
  3-bit adder                                           : 3
  4-bit adder                                           : 1
  7-bit subtractor                                      : 2
-# Counters                                             : 2
+# Counters                                             : 3
  3-bit up counter                                      : 2
-# Registers                                            : 94
- Flip-Flops                                            : 94
-# Comparators                                          : 6
+ 4-bit up counter                                      : 1
+# Registers                                            : 118
+ Flip-Flops                                            : 118
+# Comparators                                          : 9
+ 10-bit comparator greater                             : 2
  3-bit comparator greater                              : 4
- 4-bit comparator greater                              : 2
-# Multiplexers                                         : 87
- 1-bit 2-to-1 multiplexer                              : 68
+ 4-bit comparator greater                              : 3
+# Multiplexers                                         : 102
+ 1-bit 2-to-1 multiplexer                              : 79
+ 10-bit 2-to-1 multiplexer                             : 2
  3-bit 2-to-1 multiplexer                              : 6
- 4-bit 2-to-1 multiplexer                              : 9
+ 4-bit 2-to-1 multiplexer                              : 11
  8-bit 2-to-1 multiplexer                              : 4
 
 =========================================================================
@@ -238,18 +269,71 @@ Macro Statistics
 =========================================================================
 *                         Low Level Synthesis                           *
 =========================================================================
+INFO:Xst:2261 - The FF/Latch <T_REQUEST_CK_SYNC> in Unit <Core> is equivalent to the following FF/Latch, which will be removed : <TRNSMTP> 
+WARNING:Xst:1710 - FF/Latch <Collision_Detect.RANDOM_TIME_0> (without init value) has a constant value of 1 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.RANDOM_TIME_1> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.RANDOM_TIME_2> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.RANDOM_TIME_3> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.RANDOM_TIME_4> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.RANDOM_TIME_5> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.RANDOM_TIME_6> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.RANDOM_TIME_7> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.RANDOM_TIME_8> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.RANDOM_TIME_9> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2677 - Node <Collision_Detect.RAND_POS_0> of sequential type is unconnected in block <Core>.
+WARNING:Xst:2677 - Node <Collision_Detect.RAND_POS_1> of sequential type is unconnected in block <Core>.
+WARNING:Xst:2677 - Node <Collision_Detect.RAND_POS_2> of sequential type is unconnected in block <Core>.
+WARNING:Xst:2677 - Node <Collision_Detect.RAND_POS_3> of sequential type is unconnected in block <Core>.
 
 Optimizing unit <Core> ...
-INFO:Xst:2261 - The FF/Latch <T_REQUEST_CK_SYNC> in Unit <Core> is equivalent to the following FF/Latch, which will be removed : <TRNSMTP> 
+WARNING:Xst:1293 - FF/Latch <Transmitter.COUNT4_1> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TREADDP> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Transmitter.COUNT10_2> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TSOCOLP> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TDATAO_7> (without init value) has a constant value of 1 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TDATAO_6> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TDATAO_5> (without init value) has a constant value of 1 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TDATAO_4> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TDATAO_3> (without init value) has a constant value of 1 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TDATAO_2> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TDATAO_1> (without init value) has a constant value of 1 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <TDATAO_0> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Transmitter.ADRCOUNT_0> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_9> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_8> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_7> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_6> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_5> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_4> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_3> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_2> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_1> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Collision_Detect.TIME_COUNT_0> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Transmitter.DADR_SENT> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Transmitter.TADR_SENT> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <Transmitter.SFD_SENT> has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <TDONEP> (without init value) has a constant value of 0 in block <Core>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2677 - Node <Transmitter.ADRCOUNT_1> of sequential type is unconnected in block <Core>.
+WARNING:Xst:2677 - Node <Transmitter.ADRCOUNT_2> of sequential type is unconnected in block <Core>.
+WARNING:Xst:2677 - Node <Transmitter.COUNT4_2> of sequential type is unconnected in block <Core>.
+WARNING:Xst:2677 - Node <Transmitter.COUNT4_0> of sequential type is unconnected in block <Core>.
+INFO:Xst:2261 - The FF/Latch <SENDING> in Unit <Core> is equivalent to the following 2 FFs/Latches, which will be removed : <T_REQUEST_CK_SYNC> <Transmitter.COUNT10_0> 
+INFO:Xst:2261 - The FF/Latch <Transmitter.SENDING_FAIL> in Unit <Core> is equivalent to the following FF/Latch, which will be removed : <T_ALLOWED> 
+INFO:Xst:3203 - The FF/Latch <Transmitter.SENDING_FAIL> in Unit <Core> is the opposite to the following 2 FFs/Latches, which will be removed : <Transmitter.COUNT10_1> <Transmitter.COUNT10_3> 
 
 Mapping all equations...
+WARNING:Xst:2677 - Node <RECEIVING> of sequential type is unconnected in block <Core>.
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 5) on block Core, actual ratio is 2.
-FlipFlop CLKDIV_UP has been replicated 1 time(s)
+Found area constraint ratio of 100 (+ 5) on block Core, actual ratio is 1.
+WARNING:Xst:1426 - The value init of the FF/Latch Transmitter.SENDING_FAIL hinder the constant cleaning in the block Core.
+   You should achieve better results by setting this init to 1.
+FlipFlop CLKDIV_UP has been replicated 2 time(s)
+FlipFlop Receiver.RCOUNT_0 has been replicated 1 time(s)
 FlipFlop Receiver.RCOUNT_1 has been replicated 1 time(s)
 FlipFlop Receiver.RCOUNT_2 has been replicated 1 time(s)
-FlipFlop Transmitter.DADR_SENT has been replicated 1 time(s)
-FlipFlop Transmitter.SFD_SENT has been replicated 1 time(s)
+FlipFlop S_RCVNGP has been replicated 1 time(s)
+FlipFlop S_RSMATIP has been replicated 2 time(s)
+FlipFlop Transmitter.SENDING_FAIL has been replicated 1 time(s) to handle iob=true attribute.
 
 Final Macro Processing ...
 
@@ -257,8 +341,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 104
- Flip-Flops                                            : 104
+# Registers                                            : 85
+ Flip-Flops                                            : 85
 
 =========================================================================
 
@@ -281,29 +365,24 @@ Top Level Output File Name         : Core.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 156
+# BELS                             : 107
 #      GND                         : 1
-#      INV                         : 1
-#      LUT2                        : 3
-#      LUT3                        : 12
-#      LUT4                        : 16
-#      LUT5                        : 18
-#      LUT6                        : 88
+#      LUT3                        : 6
+#      LUT4                        : 8
+#      LUT5                        : 6
+#      LUT6                        : 76
 #      MUXCY                       : 9
-#      MUXF7                       : 7
 #      VCC                         : 1
-# FlipFlops/Latches                : 104
-#      FD                          : 29
+# FlipFlops/Latches                : 85
+#      FD                          : 21
 #      FDE                         : 8
-#      FDR                         : 7
-#      FDRE                        : 55
-#      FDS                         : 1
-#      FDSE                        : 4
+#      FDR                         : 3
+#      FDRE                        : 53
 # Clock Buffers                    : 1
 #      BUFGP                       : 1
-# IO Buffers                       : 47
-#      IBUF                        : 20
-#      OBUF                        : 27
+# IO Buffers                       : 38
+#      IBUF                        : 10
+#      OBUF                        : 28
 
 Device utilization summary:
 ---------------------------
@@ -312,20 +391,21 @@ Selected Device : 6slx16csg324-2
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:             104  out of  18224     0%  
- Number of Slice LUTs:                  138  out of   9112     1%  
-    Number used as Logic:               138  out of   9112     1%  
+ Number of Slice Registers:              84  out of  18224     0%  
+ Number of Slice LUTs:                   96  out of   9112     1%  
+    Number used as Logic:                96  out of   9112     1%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:    149
-   Number with an unused Flip Flop:      45  out of    149    30%  
-   Number with an unused LUT:            11  out of    149     7%  
-   Number of fully used LUT-FF pairs:    93  out of    149    62%  
-   Number of unique control sets:         9
+ Number of LUT Flip Flop pairs used:    103
+   Number with an unused Flip Flop:      19  out of    103    18%  
+   Number with an unused LUT:             7  out of    103     6%  
+   Number of fully used LUT-FF pairs:    77  out of    103    74%  
+   Number of unique control sets:         6
 
 IO Utilization: 
- Number of IOs:                          99
- Number of bonded IOBs:                  48  out of    232    20%  
+ Number of IOs:                         100
+ Number of bonded IOBs:                  39  out of    232    16%  
+    IOB Flip Flops/Latches:               1
 
 Specific Feature Utilization:
  Number of BUFG/BUFGCTRLs:                1  out of     16     6%  
@@ -351,7 +431,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-CLK10I                             | BUFGP                  | 104   |
+CLK10I                             | BUFGP                  | 85    |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -362,9 +442,9 @@ Timing Summary:
 ---------------
 Speed Grade: -2
 
-   Minimum period: 4.196ns (Maximum Frequency: 238.322MHz)
-   Minimum input arrival time before clock: 7.408ns
-   Maximum output required time after clock: 4.645ns
+   Minimum period: 3.987ns (Maximum Frequency: 250.818MHz)
+   Minimum input arrival time before clock: 7.559ns
+   Maximum output required time after clock: 5.420ns
    Maximum combinational path delay: No path found
 
 Timing Details:
@@ -373,33 +453,31 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'CLK10I'
-  Clock period: 4.196ns (frequency: 238.322MHz)
-  Total number of paths / destination ports: 1306 / 227
+  Clock period: 3.987ns (frequency: 250.818MHz)
+  Total number of paths / destination ports: 1122 / 199
 -------------------------------------------------------------------------
-Delay:               4.196ns (Levels of Logic = 3)
-  Source:            Transmitter.COUNT4_2 (FF)
-  Destination:       Transmitter.COUNT10_2 (FF)
+Delay:               3.987ns (Levels of Logic = 1)
+  Source:            S_RCVNGP (FF)
+  Destination:       S_RSMATIP (FF)
   Source Clock:      CLK10I rising
   Destination Clock: CLK10I rising
 
-  Data Path: Transmitter.COUNT4_2 to Transmitter.COUNT10_2
+  Data Path: S_RCVNGP to S_RSMATIP
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q               5   0.525   1.069  Transmitter.COUNT4_2 (Transmitter.COUNT4_2)
-     LUT4:I1->O            8   0.235   0.944  TABORTP_Transmitter.COUNT4[2]_AND_7_o1 (TABORTP_Transmitter.COUNT4[2]_AND_7_o)
-     LUT6:I5->O            5   0.254   0.841  Mmux_GND_5_o_GND_5_o_mux_157_OUT41 (Mmux_GND_5_o_GND_5_o_mux_157_OUT41)
-     LUT5:I4->O            1   0.254   0.000  Mmux_GND_5_o_GND_5_o_mux_157_OUT61 (GND_5_o_GND_5_o_mux_157_OUT<2>)
-     FDR:D                     0.074          Transmitter.COUNT10_2
+     FD:C->Q              71   0.525   1.984  S_RCVNGP (S_RCVNGP)
+     LUT5:I4->O            3   0.254   0.765  _n06251 (_n0625)
+     FDR:R                     0.459          S_RSMATIP
     ----------------------------------------
-    Total                      4.196ns (1.342ns logic, 2.854ns route)
-                                       (32.0% logic, 68.0% route)
+    Total                      3.987ns (1.238ns logic, 2.749ns route)
+                                       (31.1% logic, 68.9% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'CLK10I'
-  Total number of paths / destination ports: 833 / 171
+  Total number of paths / destination ports: 783 / 129
 -------------------------------------------------------------------------
-Offset:              7.408ns (Levels of Logic = 4)
+Offset:              7.559ns (Levels of Logic = 4)
   Source:            RDATAI<1> (PAD)
   Destination:       Receiver.ADDRESS_BUFFER_0 (FF)
   Destination Clock: CLK10I rising
@@ -409,19 +487,19 @@ Offset:              7.408ns (Levels of Logic = 4)
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
      IBUF:I->O             8   1.328   1.172  RDATAI_1_IBUF (RDATAI_1_IBUF)
-     LUT3:I0->O            1   0.235   0.682  RDATAI[7]_PWR_5_o_equal_79_o<7>_SW0 (N10)
-     LUT6:I5->O           10   0.254   1.438  RDATAI[7]_PWR_5_o_equal_79_o<7> (RDATAI[7]_PWR_5_o_equal_79_o)
-     LUT6:I1->O           36   0.254   1.586  _n04471 (_n0447)
+     LUT3:I0->O            1   0.235   0.682  RDATAI[7]_PWR_5_o_equal_78_o<7>_SW0 (N12)
+     LUT6:I5->O           17   0.254   1.639  RDATAI[7]_PWR_5_o_equal_78_o<7> (RDATAI[7]_PWR_5_o_equal_78_o)
+     LUT6:I1->O           33   0.254   1.536  _n06031 (_n0603)
      FDRE:R                    0.459          Receiver.ADDRESS_BUFFER_0
     ----------------------------------------
-    Total                      7.408ns (2.530ns logic, 4.878ns route)
-                                       (34.2% logic, 65.8% route)
+    Total                      7.559ns (2.530ns logic, 5.029ns route)
+                                       (33.5% logic, 66.5% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'CLK10I'
-  Total number of paths / destination ports: 27 / 27
+  Total number of paths / destination ports: 17 / 17
 -------------------------------------------------------------------------
-Offset:              4.645ns (Levels of Logic = 1)
+Offset:              5.420ns (Levels of Logic = 1)
   Source:            S_RCVNGP (FF)
   Destination:       RCVNGP (PAD)
   Source Clock:      CLK10I rising
@@ -430,11 +508,11 @@ Offset:              4.645ns (Levels of Logic = 1)
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q              17   0.525   1.208  S_RCVNGP (S_RCVNGP)
+     FD:C->Q              71   0.525   1.983  S_RCVNGP (S_RCVNGP)
      OBUF:I->O                 2.912          RCVNGP_OBUF (RCVNGP)
     ----------------------------------------
-    Total                      4.645ns (3.437ns logic, 1.208ns route)
-                                       (74.0% logic, 26.0% route)
+    Total                      5.420ns (3.437ns logic, 1.983ns route)
+                                       (63.4% logic, 36.6% route)
 
 =========================================================================
 
@@ -446,21 +524,21 @@ Clock to Setup on destination clock CLK10I
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-CLK10I         |    4.196|         |         |         |
+CLK10I         |    3.987|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
-Total REAL time to Xst completion: 19.00 secs
-Total CPU time to Xst completion: 17.80 secs
+Total REAL time to Xst completion: 5.00 secs
+Total CPU time to Xst completion: 4.86 secs
  
 --> 
 
 
-Total memory usage is 386580 kilobytes
+Total memory usage is 387024 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :    5 (   0 filtered)
-Number of infos    :    1 (   0 filtered)
+Number of warnings :   53 (   0 filtered)
+Number of infos    :    4 (   0 filtered)
 

@@ -64,7 +64,8 @@ ARCHITECTURE behavior OF Receiver_Test IS
          TSOCOLP : OUT  std_logic;
          NOADDRI : IN  std_logic_vector(47 downto 0);
          CLK10I : IN  std_logic;
-         RESETN : IN  std_logic
+         RESETN : IN  std_logic; 
+			COL : OUT STD_LOGIC 
         );
     END COMPONENT;
     
@@ -96,6 +97,7 @@ ARCHITECTURE behavior OF Receiver_Test IS
    signal TRNSMTP : std_logic;
    signal TSTARTP : std_logic;
    signal TSOCOLP : std_logic;
+	signal COL : STD_LOGIC;  
 
    -- Clock period definitions
    constant CLK10I_period : time := 10 ns;
@@ -127,7 +129,8 @@ BEGIN
           TSOCOLP => TSOCOLP,
           NOADDRI => NOADDRI,
           CLK10I => CLK10I,
-          RESETN => RESETN
+          RESETN => RESETN, 
+			 COL => COL
         );
 
    --Clock process definitions
@@ -154,12 +157,12 @@ BEGIN
 		
 		RDATAI <= (others=>'1') after 200ns; 
 		RDATAI <= X"AB" after 400ns; 
-		RENABP <= '0', '1' after 600ns; 
+		RENABP <= '1', '0' after 600ns; 
 		RDATAI <= X"AB"; 
-		RENABP <= '1'; 
+		--RENABP <= '1'; 
 		RDATAI <= X"12" after 80ns, X"34" after 2*80ns, X"56" after 3*80ns;--, X"12" after 4*80ns,X"34" after 5*80ns,X"56" after 6*80ns,X"AB" after 10*80ns,X"00" after 11*80ns,X"AB" after 12*80ns- 20ns,X"12" after 13*80ns- 20ns,X"34" after 14*80ns- 20ns,X"56" after 15*80ns- 20ns,X"AB" after 16*80ns- 20ns  ;
 	
-		TAVAILP <= '0', '1' after 200ns, '0' after 210ns; 
+		TAVAILP <= '0', '1' after 200ns;
 		TDATAI <= X"12" after 80ns, X"34" after 2*80ns, X"56" after 3*80ns, X"12" after 4*80ns,X"34" after 5*80ns;
 		TLASTP <= '0', '1' after 5*80ns; 
 		TABORTP <= '0', '1' after 7*80ns, '0' after 7*80ns+10ns;

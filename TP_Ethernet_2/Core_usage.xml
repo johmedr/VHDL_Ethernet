@@ -4,8 +4,8 @@
      changes made to this file may result in unpredictable
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
-<DeviceUsageSummary rev="50">
-<DesignStatistics TimeStamp="Wed Nov 30 23:40:00 2016"><group name="NetStatistics">
+<DeviceUsageSummary rev="92">
+<DesignStatistics TimeStamp="Thu Dec  1 13:23:45 2016"><group name="NetStatistics">
 <item name="NumNets_Active" rev="7">
 <attrib name="value" value="185"/></item>
 <item name="NumNets_Vcc" rev="7">
@@ -92,48 +92,48 @@
 <attrib name="value" value="5"/></item>
 </group>
 <group name="MiscellaneousStatistics">
-<item name="AGG_BONDED_IO" rev="50">
-<attrib name="value" value="48"/></item>
-<item name="AGG_IO" rev="50">
-<attrib name="value" value="48"/></item>
-<item name="AGG_SLICE" rev="50">
-<attrib name="value" value="52"/></item>
-<item name="NUM_BONDED_IOB" rev="50">
-<attrib name="value" value="48"/></item>
-<item name="NUM_BSFULL" rev="50">
-<attrib name="value" value="88"/></item>
-<item name="NUM_BSLUTONLY" rev="50">
-<attrib name="value" value="44"/></item>
-<item name="NUM_BSREGONLY" rev="50">
-<attrib name="value" value="13"/></item>
-<item name="NUM_BSUSED" rev="50">
-<attrib name="value" value="145"/></item>
-<item name="NUM_BUFG" rev="50">
-<attrib name="value" value="1"/></item>
-<item name="NUM_LOGIC_O5ANDO6" rev="50">
+<item name="AGG_BONDED_IO" rev="92">
+<attrib name="value" value="39"/></item>
+<item name="AGG_IO" rev="92">
+<attrib name="value" value="39"/></item>
+<item name="AGG_SLICE" rev="92">
+<attrib name="value" value="34"/></item>
+<item name="NUM_BONDED_IOB" rev="92">
+<attrib name="value" value="39"/></item>
+<item name="NUM_BSFULL" rev="92">
+<attrib name="value" value="74"/></item>
+<item name="NUM_BSLUTONLY" rev="92">
+<attrib name="value" value="19"/></item>
+<item name="NUM_BSREGONLY" rev="92">
 <attrib name="value" value="7"/></item>
-<item name="NUM_LOGIC_O6ONLY" rev="50">
-<attrib name="value" value="125"/></item>
-<item name="NUM_LUT_RT_O5" rev="50">
+<item name="NUM_BSUSED" rev="92">
+<attrib name="value" value="100"/></item>
+<item name="NUM_BUFG" rev="92">
 <attrib name="value" value="1"/></item>
-<item name="NUM_SLICEL" rev="50">
-<attrib name="value" value="10"/></item>
-<item name="NUM_SLICEX" rev="50">
-<attrib name="value" value="42"/></item>
-<item name="NUM_SLICE_CARRY4" rev="50">
+<item name="NUM_IOB_FF" rev="92">
+<attrib name="value" value="1"/></item>
+<item name="NUM_LOGIC_O5ANDO6" rev="92">
+<attrib name="value" value="4"/></item>
+<item name="NUM_LOGIC_O6ONLY" rev="92">
+<attrib name="value" value="89"/></item>
+<item name="NUM_OLOGIC2" rev="92">
+<attrib name="value" value="1"/></item>
+<item name="NUM_SLICEL" rev="92">
 <attrib name="value" value="3"/></item>
-<item name="NUM_SLICE_CONTROLSET" rev="50">
-<attrib name="value" value="9"/></item>
-<item name="NUM_SLICE_CYINIT" rev="50">
-<attrib name="value" value="141"/></item>
-<item name="NUM_SLICE_F7MUX" rev="50">
-<attrib name="value" value="7"/></item>
-<item name="NUM_SLICE_FF" rev="50">
-<attrib name="value" value="104"/></item>
-<item name="NUM_SLICE_UNUSEDCTRL" rev="50">
-<attrib name="value" value="9"/></item>
-<item name="NUM_UNUSABLE_FF_BELS" rev="50">
-<attrib name="value" value="24"/></item>
+<item name="NUM_SLICEX" rev="92">
+<attrib name="value" value="31"/></item>
+<item name="NUM_SLICE_CARRY4" rev="92">
+<attrib name="value" value="3"/></item>
+<item name="NUM_SLICE_CONTROLSET" rev="92">
+<attrib name="value" value="6"/></item>
+<item name="NUM_SLICE_CYINIT" rev="92">
+<attrib name="value" value="98"/></item>
+<item name="NUM_SLICE_FF" rev="92">
+<attrib name="value" value="84"/></item>
+<item name="NUM_SLICE_UNUSEDCTRL" rev="92">
+<attrib name="value" value="4"/></item>
+<item name="NUM_UNUSABLE_FF_BELS" rev="92">
+<attrib name="value" value="20"/></item>
 </group>
 </DesignStatistics>
 <ReportConfigData TimeStamp="Tue Nov 29 10:22:18 2016"><group name="REG_SR">

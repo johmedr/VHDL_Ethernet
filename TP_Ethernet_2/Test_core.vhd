@@ -67,7 +67,8 @@ ARCHITECTURE behavior OF Receiver_Test IS
          -- NOADDRI : IN  std_logic_vector(47 downto 0);
          CLK10I : IN  std_logic;
          RESETN : IN  std_logic; 
-			COL : OUT STD_LOGIC 
+			COL : OUT STD_LOGIC
+
         );
     END COMPONENT;
     
@@ -85,7 +86,7 @@ ARCHITECTURE behavior OF Receiver_Test IS
    signal RESETN : std_logic := '0';
 
  	--Outputs
-   signal RBYTEP : std_logic;
+   signal RBYTEP : std_logic; 
 	signal CLKDIV8_UP : STD_LOGIC;
    signal RCLEANP : std_logic;
    signal RCVNGP : std_logic;
@@ -144,6 +145,7 @@ BEGIN
 	 
    stim_proc: process
    begin		
+		RESETN <= '1';
       -- hold reset state for 100 ns.
       wait for 100 ns;	
 
@@ -153,22 +155,22 @@ BEGIN
       -- insert stimulus here 
 
 		
-		RENABP <= '0', '1' after 2*80ns;
-		
-		-- Test du receiver sur 2 trames avec un byte entre le EFD et SFD
-
-		RDATAI <= X"00", 
-		X"AB" after 2*80ns,
-		X"12" after 3*80ns, 	X"34" after 4*80ns, 	X"56" after 5*80ns, 	X"12" after 6*80ns,	X"34" after 7*80ns,	X"56" after 8*80ns,
-		X"01" after 9*80ns,	X"02" after 10*80ns,	X"03" after 11*80ns,
-		X"AB" after 12*80ns,	X"00" after 13*80ns,	X"AB" after 14*80ns,
-		X"12" after 15*80ns,	X"34" after 16*80ns,	X"56" after 17*80ns,	X"12" after 18*80ns,	X"34" after 19*80ns,	X"56" after 20*80ns,
-		X"AB" after 21*80ns,	X"00" after 22*80ns;
-		TAVAILP <= '0', '1' after 80ns, '0' after 2*80ns;
-
-		wait for 2000 ns;	
-		-- Test du receiver sur 2 trames sans byte entre le EFD et SFD
-
+		RENABP <= '0', '1' after 2*80ns + 10ns;
+--		
+--		-- Test du receiver sur 2 trames avec un byte entre le EFD et SFD
+--
+--		RDATAI <= X"00", 
+--		X"AB" after 2*80ns,
+--		X"12" after 3*80ns, 	X"34" after 4*80ns, 	X"56" after 5*80ns, 	X"12" after 6*80ns,	X"34" after 7*80ns,	X"56" after 8*80ns,
+--		X"01" after 9*80ns,	X"02" after 10*80ns,	X"03" after 11*80ns,
+--		X"AB" after 12*80ns,	X"00" after 13*80ns,	X"AB" after 14*80ns,
+--		X"12" after 15*80ns,	X"34" after 16*80ns,	X"56" after 17*80ns,	X"12" after 18*80ns,	X"34" after 19*80ns,	X"56" after 20*80ns,
+--		X"AB" after 21*80ns,	X"00" after 22*80ns;
+		--TAVAILP <= '0', '1' after 80ns, '0' after 2*80ns;
+--
+--		wait for 2000 ns;	
+--		-- Test du receiver sur 2 trames sans byte entre le EFD et SFD
+--
 		RDATAI <= X"00", 
 		X"AB" after 2*80ns,
 		X"12" after 3*80ns, 	X"34" after 4*80ns, 	X"56" after 5*80ns, 	X"12" after 6*80ns,	X"34" after 7*80ns,	X"56" after 8*80ns,
@@ -177,7 +179,7 @@ BEGIN
 		X"12" after 14*80ns,	X"34" after 15*80ns,	X"56" after 16*80ns,	X"12" after 17*80ns,	X"34" after 18*80ns,	X"56" after 19*80ns,
 
 		X"AB" after 20*80ns, X"00" after 21*80ns;
-		 
+--		 
 		 
 --		TAVAILP <= '0', '1' after 80ns, '0' after 2*80ns;
 ----
@@ -192,13 +194,13 @@ BEGIN
 ----		
 ----		--
 ----		wait for 1040 ns;	
-----		-- Test du transmiter 
-----		TAVAILP <= '0', '1' after 80ns, '0' after 2*80ns;
-----		TDATAI <= X"12" after 2*80ns, X"34" after 3*80ns, X"56" after 4*80ns, X"12" after 5*80ns,X"34" after 6*80ns, X"56" after 7*80ns; 
-----		wait for (8+6)*80ns; -- Temps de transmettre adresse hote
-----		TDATAI <= X"01", 	X"02" after 1*80ns,	X"03" after 2*80ns, 	X"04" after 3*80ns,	X"05" after 4*80ns;
-----		TLASTP <= '0', '1' after 4*80ns, '0' after 5*80ns ; 
-----		--TABORTP <= '0', '1' after 7*80ns, '0' after 7*80ns+10ns;    
+------		-- Test du transmiter 
+		TAVAILP <= '0', '1' after 80ns, '0' after 2*80ns;
+		TDATAI <= X"12" after 2*80ns, X"34" after 3*80ns, X"56" after 4*80ns, X"12" after 5*80ns,X"34" after 6*80ns, X"56" after 7*80ns; 
+		wait for (8+6)*80ns; -- Temps de transmettre adresse hote
+		TDATAI <= X"01", 	X"02" after 1*80ns,	X"03" after 2*80ns, 	X"04" after 3*80ns,	X"05" after 4*80ns;
+		TLASTP <= '0', '1' after 4*80ns, '0' after 5*80ns ; 
+--		TABORTP <= '0', '1' after 5*80ns, '0' after 5*80ns+10ns;    
 
       wait;
    end process; 

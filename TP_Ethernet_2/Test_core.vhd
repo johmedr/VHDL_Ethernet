@@ -66,10 +66,7 @@ ARCHITECTURE behavior OF Receiver_Test IS
          TSOCOLP : OUT  std_logic;
          -- NOADDRI : IN  std_logic_vector(47 downto 0);
          CLK10I : IN  std_logic;
-         RESETN : IN  std_logic; 
-			COL : OUT STD_LOGIC
-
-        );
+         RESETN : IN  std_logic);
     END COMPONENT;
     
 
@@ -100,7 +97,6 @@ ARCHITECTURE behavior OF Receiver_Test IS
    signal TRNSMTP : std_logic;
    signal TSTARTP : std_logic;
    signal TSOCOLP : std_logic;
-	signal COL : STD_LOGIC;  
 
    -- Clock period definitions
    constant CLK10I_period : time := 10 ns;
@@ -132,8 +128,7 @@ BEGIN
           TSOCOLP => TSOCOLP,
          -- NOADDRI => NOADDRI,
           CLK10I => CLK10I,
-          RESETN => RESETN, 
-			 COL => COL
+          RESETN => RESETN
         );
 
    
@@ -145,7 +140,7 @@ BEGIN
 	 
    stim_proc: process
    begin		
-		RESETN <= '1';
+		RESETN <= '0', '1' after 10ns;
       -- hold reset state for 100 ns.
       wait for 100 ns;	
 
@@ -158,18 +153,17 @@ BEGIN
 		RENABP <= '0', '1' after 2*80ns + 10ns;
 --		
 --		-- Test du receiver sur 2 trames avec un byte entre le EFD et SFD
---
---		RDATAI <= X"00", 
---		X"AB" after 2*80ns,
---		X"12" after 3*80ns, 	X"34" after 4*80ns, 	X"56" after 5*80ns, 	X"12" after 6*80ns,	X"34" after 7*80ns,	X"56" after 8*80ns,
---		X"01" after 9*80ns,	X"02" after 10*80ns,	X"03" after 11*80ns,
---		X"AB" after 12*80ns,	X"00" after 13*80ns,	X"AB" after 14*80ns,
---		X"12" after 15*80ns,	X"34" after 16*80ns,	X"56" after 17*80ns,	X"12" after 18*80ns,	X"34" after 19*80ns,	X"56" after 20*80ns,
---		X"AB" after 21*80ns,	X"00" after 22*80ns;
-		--TAVAILP <= '0', '1' after 80ns, '0' after 2*80ns;
---
---		wait for 2000 ns;	
---		-- Test du receiver sur 2 trames sans byte entre le EFD et SFD
+
+		RDATAI <= X"00", 
+		X"AB" after 2*80ns,
+		X"12" after 3*80ns, 	X"34" after 4*80ns, 	X"56" after 5*80ns, 	X"12" after 6*80ns,	X"34" after 7*80ns,	X"56" after 8*80ns,
+		X"01" after 9*80ns,	X"02" after 10*80ns,	X"03" after 11*80ns,
+		X"AB" after 12*80ns,	X"00" after 13*80ns,	X"AB" after 14*80ns,
+		X"12" after 15*80ns,	X"34" after 16*80ns,	X"56" after 17*80ns,	X"12" after 18*80ns,	X"34" after 19*80ns,	X"56" after 20*80ns,
+		X"AB" after 21*80ns,	X"00" after 22*80ns;
+
+		wait for 2000 ns;	
+		-- Test du receiver sur 2 trames sans byte entre le EFD et SFD
 --
 		RDATAI <= X"00", 
 		X"AB" after 2*80ns,
@@ -180,21 +174,19 @@ BEGIN
 
 		X"AB" after 20*80ns, X"00" after 21*80ns;
 --		 
-		 
---		TAVAILP <= '0', '1' after 80ns, '0' after 2*80ns;
-----
-----		wait for 2000 ns;	
-----		-- Test du d'une adresse incorrecte
-----		RDATAI <= X"00", 
-----		X"AB" after 2*80ns,
-----		X"12" after 3*80ns, 	X"34" after 4*80ns, 	X"56" after 5*80ns, 	X"12" after 6*80ns,	X"12" after 7*80ns,	X"56" after 8*80ns,
-----		X"01" after 9*80ns,	X"00" after 10*80ns;
-----		
-----		RENABP <= '0' after 11*80ns;
-----		
-----		--
-----		wait for 1040 ns;	
-------		-- Test du transmiter 
+--
+		wait for 2000 ns;	
+		-- Test du d'une adresse incorrecte
+		RDATAI <= X"00", 
+		X"AB" after 2*80ns,
+		X"12" after 3*80ns, 	X"34" after 4*80ns, 	X"56" after 5*80ns, 	X"12" after 6*80ns,	X"12" after 7*80ns,	X"56" after 8*80ns,
+		X"01" after 9*80ns,	X"00" after 10*80ns;
+		
+		RENABP <= '0' after 11*80ns;
+		
+		--
+		wait for 1040 ns;	
+----		-- Test du transmiter 
 		TAVAILP <= '0', '1' after 80ns, '0' after 2*80ns;
 		TDATAI <= X"12" after 2*80ns, X"34" after 3*80ns, X"56" after 4*80ns, X"12" after 5*80ns,X"34" after 6*80ns, X"56" after 7*80ns; 
 		wait for (8+6)*80ns; -- Temps de transmettre adresse hote

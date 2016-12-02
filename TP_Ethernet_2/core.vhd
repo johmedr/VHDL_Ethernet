@@ -60,8 +60,7 @@ entity Core is
 
            CLKDIV8_UP : out  STD_LOGIC;
            CLK10I : in  STD_LOGIC;
-           RESETN : in  STD_LOGIC;
-           COL : out std_logic);  
+           RESETN : in  STD_LOGIC);  
 end Core;
 
 
@@ -97,7 +96,7 @@ begin
 ------------------------------------------------------------------------
     CLKDIV : process
         
-        variable clk_count : INTEGER RANGE 0 TO 4;        -- Compte les tics d'horloge (CLK10I) 
+        variable clk_count : INTEGER RANGE 0 TO 4 := 0;        -- Compte les tics d'horloge (CLK10I) 
         variable CLKDIV_RST : STD_LOGIC;                  -- HIGH si une demande de reset est active
     begin
         -- Synchronisation sur front montant de CLK10I
@@ -157,14 +156,16 @@ begin
 		ALLOWED_RESET := '1';
 		RSTARTP <= '0';
 		ALLOWED_RESET := '1';
+		if CLKDIV_UP = '1' then 
+			RDATAO <= X"00";
+		end if; 
 		
 		if RESETN='0' then
-            ADDRESS_BUFFER := X"000000000000"; 
-            RCOUNT := 0; 
-            PAUSE := '0'; 
+			ADDRESS_BUFFER := X"000000000000"; 
+			RCOUNT := 0; 
+			PAUSE := '0'; 
 			S_RCVNGP <='0';
 			S_RSMATIP <='0';
-			RDATAO <= X"00";
 			RECEIVING <= '0'; 
 		else
 		
@@ -184,12 +185,12 @@ begin
                     
                     if PAUSE = '0' then
                     
-                    if ALLOWED_RESET = '1' then
+								if ALLOWED_RESET = '1' then
                             R_REQUEST_CK_SYNC <= '1';                  -- Sync clock divis 8 fois
                         end if;
                         
                         S_RCVNGP <= '1';	                           -- Receiving pulse
-                        ADDRESS_BUFFER := (others=>'0');               -- Reset buffer adresse
+                        ADDRESS_BUFFER := (others=>'0');             -- Reset buffer adresse
                         RCOUNT := 0; 
                         RSTARTP <= '1'; 
                         RECEIVING <= '1'; 
@@ -288,7 +289,10 @@ begin
         TSTARTP <= '0'; 
         TDONEP <= '0'; 
         ALLOWED_RESET := '1'; 
-        
+		  if CLKDIV_UP = '1' then 
+				TDATAO <= X"00"; 
+			end if; 
+		  
         if RESETN='0' then
             ADRCOUNT := 0; 
             COUNT4 := 0; 
@@ -483,6 +487,4 @@ begin
             end if; 
         end if; 
     end process Collision_Detect; 
-    
-	 COL <= T_ALLOWED;
 end Behavioral;

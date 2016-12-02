@@ -1,8 +1,0 @@
-INTSTYLE=ise
-INFILE=/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.ncd
-OUTFILE=/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2/Core.bit
-FAMILY=Spartan6
-PART=xc6slx16-2csg324
-WORKINGDIR=/home/medrano/Bureau/4AE/VHDL/TP_Ethernet_2
-LICENSE=ISE
-USER_INFO=202067218_1777487267_210567960_160

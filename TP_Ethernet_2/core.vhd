@@ -109,25 +109,25 @@ begin
 		
 		-- Synchronisation de l'horloge
 		if CLKDIV_RST = '1' then 
-			CLKDIV8 <= '0';          -- Mise  O de l'horloge (on veut commencer sur front montant) 
-			clk_count := 0;          -- Reset du compteur de tics
+			CLKDIV8 <= '0';          	-- Mise  O de l'horloge (on veut commencer sur front montant) 
+			clk_count := 0;          	-- Reset du compteur de tics
 		end if; 
 		
 		-- Front montant si clk_count = 0 et que l'on tait  l'tat bas
--- 		if clk_count = 0 and CLKDIV8 = '1' then
--- 			CLKDIV_UP <= '1';
--- 		end if;
+ 		if clk_count = 0 and CLKDIV8 = '0' then
+ 			CLKDIV_UP <= '1';
+ 		end if;
 
 -- Fonctionnement normal	
-		if clk_count = 4 then 	-- Si l'horloge tait  0, elle va passer  1 => front montant 
-			CLKDIV8 <= not CLKDIV8; 		-- Toggle
-			clk_count := 0; 					-- Reset du compteur 
-			if CLKDIV8 = '0' then 
-                CLKDIV_UP <= '1';
-            end if; 
+		clk_count := clk_count + 1;	-- Incrementation du compteur de tics 
+		if clk_count = 4 then 			-- Si l'horloge etait a 0, elle va passer  1 => front montant 
+			CLKDIV8 <= not CLKDIV8; 	-- Toggle
+			clk_count := 0; 				-- Reset du compteur 
+--			if CLKDIV8 = '0' then 
+--                CLKDIV_UP <= '1';
+--            end if; 
 		end if; 
-				-- Incrementation du compteur de tics 
-		clk_count := clk_count + 1;
+				
 		CLKDIV8_UP <= CLKDIV_UP;
 	end process CLKDIV; 
 ------------------------ end DIVISEUR HORLOGE --------------------------
@@ -149,7 +149,6 @@ begin
 		RDONEP <= '0'; 
 		R_REQUEST_CK_SYNC <= '0';
 		ALLOWED_RESET := '1';
---		RECEIVING <= '0'; 
 		
 		-- Activation du receiver
 		if RENABP = '1' then 
@@ -250,128 +249,141 @@ begin
 ------------------------------------------------------------------------
 	-- Processus de transmittion
 	Transmitter : process
-		variable ADRCOUNT : integer range 6 downto 0;         -- Compteur de la taille de l'adresse
-		variable COUNT4 : integer range 5 downto 0;	          -- Compteur d'envoi message erreur (4bytes 10101010) 
-		variable COUNT10 : integer range 10 downto 0;         -- Compteur pour les pulse 100ns 
+		variable ADRCOUNT : integer range 6 downto 0 := 0;    -- Compteur de la taille de l'adresse
+		variable COUNT4 : integer range 5 downto 0 := 0;	  -- Compteur d'envoi message erreur (4bytes 10101010) 
 		variable DADR_SENT : STD_LOGIC := '0';                -- Etat adresse destinataire envoye 
 		variable TADR_SENT : STD_LOGIC := '0';                -- Etat adresse hote envoye
 		variable SFD_SENT : STD_LOGIC := '0';                 -- Etat SFD envoye
 		variable SENDING_FAIL : STD_LOGIC := '0'; 
-		variable CAN_START_TRANSMISSION : STD_LOGIC := '0'; 
-		
+		variable LAST_DATA : STD_LOGIC := '0'; 
+		variable ALLOWED_RESET : STD_LOGIC := '1';                    -- Autorisation de resynchroniser l'horloge (LOW quand resync ncessaire) 
+		variable PAUSE : STD_LOGIC := '0'; 
 	begin
         -- Synchronisation sur CLK10I 
 		wait until CLK10I'event and CLK10I='1'; 	        
 		
-		-- Pour les pulse de 100 ns (TSTARTP et TDONEP) il suffit de mettre COUNT10 a 1
-		if COUNT10 > 0 and COUNT10 < 10 then 
-			COUNT10 := COUNT10 + 1; 
-		else 
-            -- 100ns depuis la mise a 1 de COUNT10, reset des sorties
-			COUNT10 := 0;        
-			TSTARTP <= '0'; 
-			TDONEP <= '0'; 
-		end if; 
+
+			
 		
 		-- Reset pour pulse de 10ns
 		TRNSMTP <= '0'; 
 		TREADDP <= '0'; 
 		T_REQUEST_CK_SYNC <= '0'; 
 		TSOCOLP <= '0'; 
+        TSTARTP <= '0'; 
+        TDONEP <= '0'; 
+        ALLOWED_RESET := '1'; 
 		
-		if T_ALLOWED = '0' and SENDING_FAIL = '0' then 
+		-- [TODO] Checker les collision + commenter
+		if T_ALLOWED = '0' and SENDING_FAIL = '0' then  
             SENDING_FAIL := '1'; 
             
 		-- Demande d'envoi de la part de l'hote, pas d'envoi en cours 
-		elsif TAVAILP = '1' and SENDING = '0' and T_ALLOWED = '1' and CAN_START_TRANSMISSION = '0' then
-			CAN_START_TRANSMISSION := '1'; 
+-- 		elsif TAVAILP = '1' and SENDING = '0' and T_ALLOWED = '1' and CAN_START_TRANSMISSION = '0' then
+-- 			CAN_START_TRANSMISSION := '1'; 
 		
-		elsif TAVAILP = '1' and SENDING = '0' and CAN_START_TRANSMISSION = '1' and T_ALLOWED = '1' then 
-		
-			SENDING <= '1';              -- Etat envoi
-			TRNSMTP <= '1'; 			 		-- Pulse transmission 
-			TSTARTP <= '1'; 			 		-- Dbut transmission
-			COUNT10 := 1;                -- Dbut du timer 100ns 
-			T_REQUEST_CK_SYNC <= '1';    -- Demande de synchronisation de l'horloge CLKDIV8 
-			ADRCOUNT := 0;               -- Reset compteur adresse
-			DADR_SENT := '0';            -- Adresse destinataire non envoye
-			COUNT4 := 0;                 -- Reset compteur erreur
+		elsif TAVAILP = '1' and SENDING = '0' and T_ALLOWED = '1' then 
+            if PAUSE = '1' then
+                if CLKDIV_UP = '1' then
+                    PAUSE := '0';
+                    ALLOWED_RESET := '0';
+                end if; 
+            end if; 
+				
+            if PAUSE = '0' then
+                if ALLOWED_RESET = '1' then
+                    T_REQUEST_CK_SYNC <= '1';                  -- Sync clock divis 8 fois
+                end if;
+                SENDING <= '1';              -- Etat envoi
+                TRNSMTP <= '1'; 			 		-- Pulse transmission 
+                TSTARTP <= '1'; 			 		-- Dbut transmission
+                ADRCOUNT := 0;               -- Reset compteur adresse
+                DADR_SENT := '0';            -- Adresse destinataire non envoye
+                COUNT4 := 0;                 -- Reset compteur erreur
+			end if; 
 			
         -- Etat d'envoi 
 		elsif SENDING = '1' and T_ALLOWED = '1' then 
 			
-			-- Synchronisation sur CLKDIV8 
-			if CLKDIV_UP = '1' then 
-			
-				-- TABORTP actuellement recu, ou precedemment recu et donc comptage commence
-				if (TABORTP = '1' or COUNT4 > 0) and COUNT4 < 5 then
-                    
-					TDATAO <= X"AA";           -- Envoi byte 10101010
-					COUNT4 := COUNT4 + 1;      
-					--  complter
-					if COUNT4 = 4 then         -- Fin de la procedure d'abandon
-						SENDING <= '0';        -- On est plus en envoi
-						COUNT4 := 0;           -- Reset du compteur
-						TSOCOLP <= '1';        -- Pulse collision 
+            -- TABORTP actuellement recu, ou precedemment recu et donc comptage commence
+            if (TABORTP = '1' or COUNT4 > 0) and COUNT4 < 5 then
+					if COUNT4 = 0 then 
+						COUNT4 := 1; 
 					end if; 
 					
-				-- Fonctionnement nominal
-				else 
-			
+                    if CLKDIV_UP = '1' then 
+                        TDATAO <= X"AA";           -- Envoi byte 10101010
+                        COUNT4 := COUNT4 + 1;
+                    end if; 
+                    
+                    if COUNT4 = 4 then         -- Fin de la procedure d'abandon
+                            SENDING <= '0';        -- On est plus en envoi
+                            COUNT4 := 0;           -- Reset du compteur
+                            TSOCOLP <= '1';        -- Pulse collision 
+                    end if;
+                
+            -- Fonctionnement nominal
+            else 
+                -- Synchronisation sur CLKDIV8 
+                if CLKDIV_UP = '1' then 
+                    
                     -- SFD non envoye
-					if SFD_SENT = '0' then 
+                    if SFD_SENT = '0' then  
                         TDATAO <= X"AB";        -- Envoi du SFD
-						SFD_SENT := '1';        
-					
-					-- SFD envoye - aucune adresse envoyee
-					elsif SFD_SENT = '1' and DADR_SENT = '0' and TADR_SENT = '0' then
+                        SFD_SENT := '1';        
+                    
+                    -- SFD envoye - aucune adresse envoyee
+                    elsif SFD_SENT = '1' and DADR_SENT = '0' and TADR_SENT = '0' then
                         -- Envoi adresse destinataire 
-						if ADRCOUNT < 6 then
-							TDATAO <= TDATAI;                -- On fait suivre l'adresse destinataire vers le reseau
-							TREADDP <= '1';                  -- Pulse lecture
-							ADRCOUNT := ADRCOUNT + 1; 
-						end if;
-						
-						if ADRCOUNT = 6 then 
-							ADRCOUNT := 0;                   -- Reset compteur adresse
-							DADR_SENT := '1';                -- Adresse destinataire envoyee
-						end if; 
+                        if ADRCOUNT < 6 then
+                            TDATAO <= TDATAI;                -- On fait suivre l'adresse destinataire vers le reseau
+                            TREADDP <= '1';                  -- Pulse lecture
+                            ADRCOUNT := ADRCOUNT + 1; 
+                        end if;
+                        
+                        if ADRCOUNT = 6 then 
+                            ADRCOUNT := 0;                   -- Reset compteur adresse
+                            DADR_SENT := '1';                -- Adresse destinataire envoyee
+                        end if; 
                     
                     -- SFD et adresse destinataire envoyes
-					elsif SFD_SENT = '1' and DADR_SENT = '1' and TADR_SENT = '0' then 
-					
+                    elsif SFD_SENT = '1' and DADR_SENT = '1' and TADR_SENT = '0' then 
+                    
                         -- Envoi adresse hote
-						if ADRCOUNT < 6 then
-							TDATAO <= HOST_ADDRESS((47 - (ADRCOUNT * 8)) downto (48 - ((ADRCOUNT+1) * 8))); 
-							TREADDP <= '1';                  
-							ADRCOUNT := ADRCOUNT + 1; 
-						end if; 
-						
-						if ADRCOUNT = 6 then 
-							ADRCOUNT := 0; 
-							TADR_SENT := '1'; 
-						end if; 		
-						
+                        if ADRCOUNT < 6 then
+                            TDATAO <= HOST_ADDRESS((47 - (ADRCOUNT * 8)) downto (48 - ((ADRCOUNT+1) * 8))); 
+                            TREADDP <= '1';                  
+                            ADRCOUNT := ADRCOUNT + 1; 
+                        end if; 
+                        
+                        if ADRCOUNT = 6 then 
+                            ADRCOUNT := 0; 
+                            TADR_SENT := '1'; 
+                        end if; 		
+                        
                     -- Envoi des donnees 
-					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '0' then 	-- CAS 2 adresses envoyees, debut donnees
-						TDATAO <= TDATAI; 
-						TREADDP <= '1'; 						-- Lecture des data in
-					 
-
-					elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '1' then 
-						TDATAO <= X"AB"; 
-						TDONEP <= '1'; 
-						COUNT10 := 1;
-						DADR_SENT := '0'; 
-						TADR_SENT := '0'; 
-						SENDING <= '0'; 
-						if SENDING_FAIL = '1' then 
+                    elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '0' then  	-- CAS 2 adresses envoyees, debut donnees
+                        TDATAO <= TDATAI; 
+                        TREADDP <= '1'; 						-- Lecture des data in
+                        if TLASTP = '1' then 
+                            LAST_DATA := '1'; 
+                        end if; 
+                    
+                    elsif DADR_SENT = '1' and TADR_SENT = '1' and TLASTP = '1' then 
+                        TDATAO <= X"AB"; 
+                        TDONEP <= '1'; 
+                        DADR_SENT := '0'; 
+                        TADR_SENT := '0'; 
+                        SENDING <= '0'; 
+                        LAST_DATA := '0';
+                        if SENDING_FAIL = '1' then 
                             TSOCOLP <= '1'; 
                         end if;
-					end if;
-				end if;	
-
+                        PAUSE := '1'; 
+                    end if;
+                end if; 
 			end if; 
+			COL<=LAST_DATA; 
 		end if; 
 	end process Transmitter;
 ------------------------ end Transmition ----------------------------------
@@ -431,7 +443,6 @@ begin
 		
 	end process Collision_Detect; 
 	
-	COL <= T_ALLOWED;
 	
 	
 end Behavioral;
